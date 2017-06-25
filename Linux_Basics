@@ -1,0 +1,319 @@
+LINUX  BASICS
+
+-Intepreter  is a program that reads commands in text form and executes them. e.g.awk,sed,python,ruby etc. 
+
+- Remember free list (of malloc,free) is a doubly linked list. When mem is allocated, the first byte points
+	to length of block, and the next byte is the memory returned by the malloc. When memory is returned by free(),
+	depending on length of block in first byte, pointer to prev free block, pointer to next block is stored in the memory chunk before it added back to free list.
+
+READ/WRITE operations:
+- For read()/write() system call: Transfer data from user space to kernel cache..Then kernel asynchronously writes to 	disk. When you use stdio library calls, you use stdio buffer. when buffer gets full, write() transfers it to kernel 	buffer. fflush() flushes stdio buffer. to skip stdio buffer altogether and write to kernel buf directly,do setbuf(	stream,NULL). fsync() flushes kernel buff to disk. whereas if you use O_SYNC call with open(), write() writes to disk directly.
+Refer to Page.  244.
+
+Each process: data,text,stack,heap (DTSH)
+fork(): creates new process that inherits DTSH of its parent to modify. calls execve() call to load and execute new program
+execve():destroys DTSH,creates new DTSH
+init:
+	-/sbin/init
+	- pid=1. 
+	- mother of all processes.
+	- every other process created from it via fork() directly or indirectly. Look at ppid
+	- Can never be killed unless shut down. 
+daemon:
+	- typcailly started at boot,killed at shutdown, runs in background
+	-no access to stdin or stdout
+each process gets its own env variables.
+IPC mechanism:
+	- signals aka software interrupts:sent by kernel,another process,itself etc.SIGINT,SIGKILL etc.
+	-pipes
+	-sockets
+	-shared memory
+	-message queue
+	-semaphore:for synchronization
+
+
+System Call:
+	-eg.open(),read(),write(),close(),ioctl(fd,request),fcntl(fd,..),getpid(),getppid() and hundred others
+	- entry point into linux kernel. e.g.printf gets turned into write() system call.
+	- to run system call, printf assigns sytem call number, writes to specif memory location. The processor switches from user mode to kernel mode and executes the trap handler, and calls system call service routine.
+	- the routine performs required task (i/o, transferring date bet kernel and user memory) and sends the status back to user space function in form of errno. And the returns the result as well.
+
+Virtual Memory:
+Every process has virtual memory map as follows:
+
+0xFF0 - - - - - - - - - - - - 
+	 | Kernel code (RO)		 |	
+	 |mapped into process  	 |
+	 |- - - - - - - - - - - - 
+	 |  Stack 				 |	
+	 |	|                    |
+	 |	|Growing downward    |
+	 |	v                    |
+	 |- - - - - - - - - - - -| Top of Stack
+	 |
+	  - - - - - - - - - - - - Program Break
+	 |  ^                    |
+	 |	|                    |
+	 |	|Growing upward      |
+	 |	                     |
+	 |                       |
+	 |                       |
+	 |     Heap              |
+	 |
+	 |- - - - - - - - - - - -| 
+	 |	Global/Static Data   |
+	 |                       |
+	 |- - - - - - - - - - - -| 
+	 |	text(program code)   |
+	 |                       |
+0x00  - - - - - - - - - - - - 
+
+	- Each process  virtual memory split into pages.
+	 - RAM mapped into page frames.
+	- Kernel maintins 1 page table/process.
+	- Page table maps the pages into RAM page frames , or swap area
+	- Swap area is where the pages of process not in RAM are stored , typically on disks
+	- Only certain pages of process are in RAM at any given point.
+	- Page fault when a page not in RAM is accessed by the process. Kernel suspends execution until page is loaded
+	- This way, different processs are isolated. can't access another process' page frames.
+	- Virtual memory Implementation required PMMU(Paged Memory Management Unit) H/W.
+	- Memory sharing occurs in case of shared library/ or IPC using shared memory.
+
+Fork():
+	- Creates a child process with fun prototype:  pid_t fork();
+	- Creates identical copies of DTSH for child process.
+	- Execution in both processes resume from line after fork()
+	- Whether parent process runs or child process runs right after fork() is indeterminate
+	- in parent process return value for fork() is process id of child
+	- In child process, return value for fork() is 0. In case of failure, return val =-1.
+	- text area is common R/O for both. The DSH areas are "cop-on-write"(i.e. created new for child
+		 when child processs tried to modify existing values or create new ones there)
+
+exit(int status),_exit(int status):
+	- used to exit process normally. the status argument returns status of exit to parent process usign wait().
+	-  0 is success.
+	- exit() flushes stdio buffers, and performs cleanup. It's a library function. Under the hood, this calls _exit(
+	-  _exit() is system call.
+
+wait(int* status):
+	- parent process waits for a child process to terminate. Termination status of a child process is available to its parent via this status .
+	- orphaned child has ppid=1.
+	- If a child terminates before parent has a chance to do wait(), it's a zombie. With a zombie, all its resources are released except pid,termination status.Zombies can't be killed by ANY signal. it has to wait
+	-until its parent or "init"(pid=1) performs a wait
+	- If parent process doesn't perform wait(), the entry for zombie child will be maintained indefinitely until the process is terminated . Then zombies are adopted by init and then removed.
+
+execve(pathname,arg,env): SYSTEM CALL
+	-  a process replaces currently running progrm with a new program specified by execve(). i.e. loads a new program into process memory.Old process DTSH are replaced by new DTSH.
+	- execution begins at main()
+	- Never returns. If it returns, always with -1, some error has happened
+	- Also used to execute script.Scripts always start with #!/bin/python etc.
+
+execlp(),execle(),execvp(),execv(),execl(): library functions for above system call.
+	- l: stands for list
+	- p: stands for path
+	- v: vector(i.e.array)
+
+THREADS:
+	- all threads in a process share DTH. Each its own stack space. Default size of all threads excepit main is    
+      2MB  per-thread stack
+	- they also share process id, open fds
+	- Shares same virtual memory
+	-communicate with each other via global variables, 
+	- synchronize using mutexes.
+	- easy to share data bet. threads via global variables.
+	- fork() is expensive because of page tables, fd tables, need for IPC etc. Thread creation is faster
+	- thread share data using global/static/heap variables. easier to communicate among themselves
+	- pthread_join : wait for other thread to terminate and join. similar to waitpid() of process. Any thread
+		can join any other thread. All threads are peers. No parent-child relationship here.
+	-if no pthread_join, it must use pthread_detach. 
+	- Remember pthreads return 0 on SUCCESS (like Linux)but positive value unlike Linux.
+	- Every thread has its own errno
+	- All threads in a process terminate when any of the threads call exit() or main thread returns
+	- thread can independently terminate using pthread_exit()
+	- You can exit main thread alone by calling pthread_exit(). Other threads will continue
+
+0xFF0 - - - - - - - - - - - - 
+	 | Kernel code (RO)		 |	
+	 |mapped into process  	 |
+	 |- - - - - - - - - - - - 
+	 |  Stack for main thread|	
+	 |	|                    |
+	 |	|Growing downward    |
+	 |	v                    |
+	 |- - - - - - - - - - - -| 
+	 | stack for thread1
+	 | - - - - - - - - - - - | 	                     
+	 | stack for thread2     | 	                     
+	 | - - - - - - - - - - - |
+	 |	stack for thread3	 |
+	 |						 |
+	 |- - - - - - - - - - - -|
+	 |	shared library&memory|
+	 |						 |
+	 |						 |
+	  - - - - - - - - - - - - 
+	 |  ^                    |
+	 |	|                    |
+	 |	|Growing upward      |
+	 |	                     |
+	 |                       |
+	 |                       |
+	 |     Heap              |
+	 |						 |
+	 |- - - - - - - - - - - -| 
+	 |	Global/Static Data   |
+	 |                       |
+	 |- - - - - - - - - - - -| 
+	 |	text(program code)   |<-------thread 3 executing here
+	 |                     	 |
+	 |	                     |<-------thread 1 executing here
+	 |                       | 	                     
+	 |                       |<-------main thread executing here                     
+	 |                       |<-------thread 2 executing here
+	 |						 |
+	 |						 |
+0x00  - - - - - - - - - - - - 
+
+
+
+MUTEX
+	- pthread_mutex_t should be intialized . Preferably a statically created mutex using keyword static as:
+		static pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER
+	- ONE mutex PER shared resource.
+	- Dynamic allocated mutex using pthread_mutext_init and _destroy().
+	- When a thread calls pthread_mutex_lock() on an already locked mutex, the thread is blocked until that mutex  
+	  in unlocked.
+	- If more than one thread waits for a mutex, the thread getting the lock is indeterminate.
+	- Mutexs don't require system calls, implemented using atomic machine language operations. Whereas semaphores 
+	  require system calls for lock/unlock. Hence, more expensive.
+
+DEADLOCK:
+	- Thread1 							Thread2
+	pthread_mutex_lock(mutex1)			pthread_mutex_lock(mutex2)
+	pthread_mutex_lock(mutex2)			pthread_mutex_lock(mutex1)
+ Solution:
+ 	Specify mutex hierarchy. Threads should lock mutexes in the same order. i.e. mutex1 followed by mutex2.
+
+CONDITION VARIABLE:
+	- always Used in conjunction with mutex.
+	- Meant to signal other threads that a certain condition has been met.
+	- initialized with:
+		 static pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
+	- pthread_cond_signal(&cond) is used to signal
+	- pthread_cond_wait(&cond,&mutex): 
+		- always used with while loop to check shared resource predicate
+		- remember if shared variable is not in desired state, it unlocks the mutex,and sleeps on condition variable
+		-when condition is signaled, it locks the mutex, and accesses the shared variable.
+		- pthread_mutex_unlock() does the final unlock
+	- used in producer-consumer problems.
+
+REENTRANT FUNCTION:
+	- Also knowns as thread safe. Two ways to achieve it: using only local variables. No global/static variables.
+	 Or using mutex.
+
+
+INTERPROCESS COMMUNICATION (IPC)
+
+PIPE:
+	- a byte stream (no specific r/w sizes; data transfer is sequential, no random access
+	-  Pipe is a buffer in kernel memory for unidirectional transfer between two related process. E.g. ls -1| grep 
+	- pipe has adjustable  memory with default of  65535 bytes. Once pipe is full,no more writes until some data is read from other end of pipe.
+	- pipe(int fd[2]); where fd[0] is read process;fd[1] is for write process.
+	- Typically used for parent-child comm. where  pipe() call is made bfor forking a child process. So both processes
+	  have both fds.
+	- See page 893. For parent-->child comm., parent closes fd[0] so it can't read,but do write(fd[1]) and child closes fd[1] so it can't write but only read(fd[0])
+FIFO:
+	- a named pipe. Functionally,identical to pipe in terms of using read(),write(),close()
+	- mkfifo(fifoName, ..)
+	-Read side : open(fifoName,O_RONLY);
+				 read(fifoName);
+	-Write side: open(fifoName,O_WRONLY);
+				 write(fifoName);
+	- Can be opened by any process with proper permissions.
+
+SEMAPHORES:
+	- a kernel maintained integer whose value is never allowed to go below 0.
+	- When sem_wait() is called, and the value of semaphore is 0, the process is blocked, until sem goes above zero
+	-sem_post() increases value of semaphore, and the waiting process would be unblocked. See page 966.
+	- sem_open(name),sem_post(name),sem_wait(name)
+
+
+	PROCESS 1 									PROCESS 2
+		|											|
+	sem_open(name)Create Semaphore 
+		|											|
+	Init semaphore to 0								|
+		|									sem_wait(): Subtract 1 from semaphore
+		|											|
+		|											|blocks	
+		|											|
+		|											|
+		|											|
+		|											|
+		|											|
+	sem_post():Add 1 to semaphore---------------->	| resumes                     
+		|											|							|
+		|											|							|
+		|											|							|TIME
+		|											| 							|
+		|											|							V
+		|											|
+sem_wait(): Subtract 1 from semaphore				|								
+		| 											|
+		|											|
+		|	blocks									|
+		|											| 								
+		|
+		|	<----------------------------		Add 1 to semaphore	
+		|resumes									|
+		|											|
+		|											|
+
+
+
+SHARED MEMORY
+	- memory pages are shared between processes.
+Copying into shared memory
+	- int shm_open(name): returns fd
+	- mmap(fd,R/W flag): returns void* to shared memory
+	- memcpy(addr,data,len)
+Copying from shared memory
+	- shm_open(name)
+	- addr = mmap(fd,RO flag)
+	- write(stdout,addr,len)
+
+
+DEVICE DRIVERS
+Linux supports three types of hardware device: character, block and network. Character devices are read and written directly without buffering, for example the system's serial ports /dev/cua0 and /dev/cua1. Block devices can only be written to and read from in multiples of the block size, typically 512 or 1024 bytes. Block devices are accessed via the buffer cache and may be randomly accessed, that is to say, any block can be read or written no matter where it is on the device. Block devices can be accessed via their device special file but more commonly they are accessed via the file system. Only a block device can support a mounted file system. Network devices are accessed via the BSD socket interface
+
+Device drivers have to be careful when using memory. As they are part of the Linux kernel they cannot use virtual memory. Each time a device driver runs, maybe as an interrupt is received or as a bottom half or task queue handler is scheduled, the current process may change. The device driver cannot rely on a particular process running even if it is doing work on its behalf. Like the rest of the kernel, device drivers use data structures to keep track of the device that it is controlling. These data structures can be statically allocated, part of the device driver's code, but that would be wasteful as it makes the kernel larger than it need be. Most device drivers allocate kernel, non-paged, memory to hold their data.
+
+
+TCP
+	- 3 way handshake -> SYN(n), ACK(n+1)/SYN(j), ACK(j+1) 
+	- Remember stream of bytes. So sequence number increments with every byte of upper layer message.
+	- TCP Header: 20 bytes in size, and it includes :
+
+				  |	Src portNo. | Dest Port No	|
+					----------------------------
+				  |		Sequence No.			|
+				  	----------------------------
+				  |		Ack No.					|
+				  	----------------------------
+				  |		Type |Recv Window Size	|
+				  	----------------------------
+				  			32 bits
+	- Receive Window Size is essentially the remaining buffer size in bytes of the receiver to hold packets coming 
+		from this sender . Based on that, sender will have a limit on no. of TCP segments that can remain unacknowleged at a given time.
+	- ACK is always sent for last received segment in order. Even if you receive higher number segments correctly,
+	 if there is a gap in the received segments, the ACK is always sent for last in-order segment, while the later segments that arrived out of order are buffered.
+	 -  Flow Control:  To prevent sender from overwhelming the receiver. The rrcv window size throtttles the sender
+	 - Congestion Control: 
+	 		- This is to prevent sender from overwhelming the network. 
+	 		- Done based on slow start + congestion avoidance. 
+	 			You start by sending 1 segment/RTT and double it to 2/4/8 etc. in exponential manner
+	 			until  a certain threshold is hit. And this is the threshold at which we might start having retransmissions to indicate that we have reached network capacity. From this point onwards, the increase would be linear guided by Receive Window Size.
+	 		- 	Remember triple duplicate ACK results in fast retransmit.
+
+
+

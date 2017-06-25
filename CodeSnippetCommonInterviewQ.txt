@@ -1,0 +1,465 @@
+C++
+
+Constructors of any kind : no return value
+--------------------------------------------
+COPY CONSTRUCTOR -(important to have const)
+
+MyClass(const MyClass& other){
+	deepCopy()
+}
+
+--------------------------------------------
+ASSIGNMENT OPERATOR - (note: where const is, why return has no const and returning *this)
+
+MyClass& operator=(const MyClass& other){
+	if(this == &other)
+		return *this;
+	else{
+		processing;
+		return *this;
+	}
+}
+
+--------------------------------------------
+INHERITANCE -Remember protected is to help derived classes access base member variables.
+class Vehicle{
+	public:
+		virtual bool drive();
+		virtual ~Vehicle();
+	protected:
+		int der;
+	private:
+		int priv;
+
+	
+}
+class Car:public Vehicle{
+	virtual bool drive(){
+		der = val;
+	}
+	virtual ~Car();	
+}
+
+--------------------------------------------
+DIAMOND PROBLEM with multiple inheritance. Solve with virtual base class while inheriting classes 
+with common parent.
+
+--------------------------------------------
+EXCEPTION: remember stack unwinds until you find matching catch. If not, program aborts
+try{
+	throw something;
+}
+/*catch all*/
+catch(...){
+	
+}
+--------------------------------------------
+SHARED,WEAK AND UNIQUE_PTR
+--------------------------------------------
+Shared_ptr and weak_ptr: creates managed object and manager object. The latter keeps track of
+the shared_ptr count and weak_ptr count. When shared_ptr count goes to zero,
+the actual object (ie.managed object is deleted), but manager object sticks around.
+That is only deleted when weak pointer goes to zero.
+
+Unique_ptr: Only one can own the object at any given time. No copy constructors and 
+copy assignment allowed.For passing as function argument, use pass by reference.
+Transferring ownership of unique pointer is done by std::move 
+Move constructor and move assignment operator are defined for uniqe pointer
+
+unique_ptr<Thing> p1(new Thing); // p1 owns the Thing
+unique_ptr<Thing> p2; // p2 owns nothing
+// invoke move assignment explicitly
+p2 = std::move(p1); // now p2 owns it, p1 owns nothing
+// invoke move construction explicitly
+unique_ptr<Thing> p3(std::move(p2)); // now p3 owns it, p2 and p1 own nothing
+
+
+--------------------------------------------
+	Virtual Function Table (VFT)
+--------------------------------------------
+	-  IMPORTANT: 1 VFT per class. But every object will have a "vptr" pointing to its class' VFT entry 
+	-  VFT is stored in static area of a program.
+	- Anytime you create object in heap, there will be vptr prefixed to the object that points to VFT entry for that 
+		class.
+	- So invoking right function  with base pointer is matter of using vptr and right offset into the VFT table entry
+	- the functions are arranged in such a way there is functions with same name are at same offsets in VFT
+	-Refer to Favorited StackOverflow page for multiple inheritance
+
+
+-----------------------------------------------------
+				MULTITHREADING 
+-----------------------------------------------------
+REMEMBER: mutex, thread, future, lock are all only movable, not copyable
+1) Thread object
+	std::thread t1(func, arg1, ref(arg2))
+This will run func(int arg1, string & arg2) in a separate thread.
+2) To lock the resource use,
+	std::mutex m; 
+	Mutex m has its own lock and unlock(), But don't use it. Instead go below
+
+But this maybe used as lock_guard or unique_lock()
+
+3)This is exception safe . Prefer lockguard when needed
+lock_guard<mutex> locker(m){
+	do thread safe operation
+}
+4) unique_lock<mutex> ulocker(m);  ====>  ulocker.unlock(); 
+unique_lock can lock  and unlock the mutex  any number of times.
+
+5) std::condition_variable cond;  Used to signal and wait for condition to be met.
+	cond.notify_one(); //notify one thead
+	cond.notify_all(); /notify all threadds
+	cond.wait(ulocker); //you need locker because when the signal is received, the resource is 		
+	 					//locked. WHich then needs to be unlocked
+	//Do some processing
+	....
+
+	ulocker.unlock();
+
+5) If you wanns run a resource just once in a thread safe way, do:
+	std::once_flag flag;
+	std::call_once(flag, [&](){ one time operation});
+
+6) Async is used to run a new thread and return value. 
+ Async may or may not spawn a new thread, Specify parameters for that in the async call
+ to force it to create a new thread.
+ std::future<int> f = std::async(func, a);
+//  To get the value returned by async, make a call to get().
+//Remembercan be called ONLY ONCE. After that it returns error,
+	int x = f.get();
+
+7)If you wanna a pass a value from parent to child thread, you can use promise:
+	std::promise<int> p;
+	std::future<int> f1 = p.get_future();
+
+	Now inside the child thread, you will get the future like:
+	func(std::future<int>& f){
+		int n = f.get();
+	}
+ 	//do other things.
+ 	//Now pass value to child thread
+ 	p.set_value(44);
+ 	After this call, n inside the child thread will get the value 44.
+
+8) If you wanna send the same future to multiple child threads, you can't use above
+future as is, because f.get() can be called only once.
+Solution:
+	shared_future<int> sf = f.share();
+	This can be copied, unlike future, which is only movable.
+
+9) Remember: The argument passed to thread can not only be a func, but any
+CALLABLE object. eg.
+
+Class A{
+	int f(string a, int b);
+	int g(int c);
+	int operator()(int v){};
+}
+
+int main(){
+	A a;
+	thread t1(a, 6); //makes a copy of a, and calls functor on that in new thread
+	thread t1(ref(a), 6); // uses a by calling its functor
+	thread t1(move(a), 6); //moves a to new thread
+	thread t1([](int val){ return val+1;}, 6); // lambda call executed in a new thread
+	thread t1(&A::g, a, 6); // calls copy of a.g(6) in a new thread
+	thread t1(&A::g, &a, 6); //calls a.g(6) in a new thread
+}
+
+These are equally applicable for std::bind(), std::async()
+
+
+
+---
+
+/*Depth First Search*/
+class Graph{
+	Node[] nodes;
+}
+class Node{
+	string name;
+	Node[] adjacent;
+}
+void dfs(node* root){
+	if (root==NULL)
+		return;
+	visit(root);
+	root.visited = true
+	(for each n in adj. root.adjacent){
+		if(n.visted = false)
+			dfs(n)
+	}
+
+}
+
+--------------------------------------------
+/*Breadth First Search*/
+void bfs(node* root){
+	if(root==NULL)
+		return;
+	visit(root);
+	root.visited= true
+	for each n in root.adjacent{
+		enqueue(n);
+	}
+	while(queue not empty){
+		top = dequeue;
+		visit(top);
+		top.visited = true
+		for each n in top.adjacent
+			if(n.visited = false)
+				enqueue(n);
+
+	}
+
+}
+
+--------------------------------------------
+/*compute height of a tree*/
+int treeHeight(Node root){
+		if(root==null)return 0;
+		return (1+ std::max(treeHeight(root.left),treeHeight(root.right)));
+	}
+
+--------------------------------------------
+//counting number of 1s in a number
+while ((num = (num & (num-1))) != 0){
+	count++;
+}
+
+
+/*C++ linked list*/
+template <typename T>
+struct ListNode{
+	T data;
+	shared_ptr<ListNode<T>> next;
+
+}
+--------------------------------------------
+/*removing duplicates from a list. O(n^2)*/
+checkDup(Node* root){
+	Node* current = root;
+	Node* runner;
+	while(current!= null){
+		runner = current;
+		while(runner.next != null){
+			if(runner.next.data==current.data){
+				runner.next = runner.next.next
+			}
+			else{
+				runner = runner.next
+			}
+			
+
+		}
+		current = current.next
+	}
+}
+--------------------------------------------
+
+
+/*checking for loop in a list*/
+checkLoopInList(Node* root){
+	Node* fast = head;
+	Node* slow = fast;
+
+
+	while(fast != NULL && fast.next != NULL){
+		slow = slow.next;
+		fast = fast.next.next;
+		if(slow==fast)
+			break;
+	}
+	if(fast == NULL|| fast.next == NULL)
+		return false;
+	slow = head;
+	while(slow!=fast){
+		slow= slow.next
+		fast= fast.next
+	}
+	return fast;
+}
+
+
+--------------------------------------------
+
+/*return kth to last element of list*/
+Node* returnKthElement(Node* root,int k,int &val){
+	if root==NULL{
+		val = 0;
+		return NULL;
+	}
+	
+	Node* node  = returnKthElement(root->next,k,val);
+	val = val+1;
+	if(val == k)
+		return root;
+	return node;
+	
+}
+Node* returnKthElement(Node* root,int k){
+	int val= 0
+	return returnKthElement(root,k,val);
+}
+
+--------------------------------------------
+
+int fibonacci(int n){
+	if (n==0)
+		return 0;
+	if(n==1)
+		return 1;
+	return fibnoacci(n-1)+ fibonacci(n-2)
+
+}
+
+------------------------------------------------
+
+int fibonacci(int n){
+	return fibonacci(n,new int[n+1]);
+}
+int fibonacci(int n,int* memo){
+	if(n==0 || n==1)
+		return n;
+	if(memo[n] == 0){
+		memo[n] = fibonacci(n-1,memo) + fibonacci(n-2,memo);
+	}
+	return memo[n];
+}
+
+--------------------------------------------
+
+TreeNode createMinBST(arr[],int start, int end){
+	int mid =start+end/2;
+	Treenode n = new (arr[mid]);
+	n.left = createMinBST(arr,start,mid-1);
+	n.right = createMinBST(arr,mid+1,end);
+	return n;
+
+}
+------------------------------------------------
+Node getNext(Node n){
+	if (n==NULL)
+		return NULL;
+
+	if(n.right!= NULL){
+		return dgetleftMostNode(n.right);
+	}
+	else{
+		current = n;
+		p = n.parent;
+		while(p!=NULL && p.left != current){
+			current = p;
+			p = p.parent;
+		}
+
+		return p;
+	}
+
+	
+}
+char *p =  new char[5];
+int* pi = new int[4];
+delete []pi;
+
+std::unique_ptr<Foo> p1(new Foo(42));
+std::shared_ptr<int> sp(new int);
+v.push_back(p1);
+Foo* p = new Foo(42);
+
+-------------------------------------------
+template<typename T>
+class SmartPointer{
+	
+	SmartPointer(T* p){
+		ptr = p;
+		refCount = malloc(sizeof(usigned int));
+		*refCount = 1;
+	}
+
+	SmartPointer(SmartPointer<T> &sp){
+		this.ptr = sp.ptr
+		ref_count = sp.ref_count
+		++(*refCount);
+	}
+
+	SmartPointer<T> operator=(SmartPointer<T> &sp){
+		if(this == &sp)
+			return *this;
+		if(*refCount > 0)
+			remove();
+		}
+		this.ptr = sp.ptr
+		ref_count = sp.ref_count
+		++(*refCount);
+	}
+
+	void remove(){
+		
+			(*refCount)--;
+			if(refCount==0){
+				delete ptr;
+				free(refCount);
+			}
+	}
+
+	}
+	private:
+		T* ptr;
+		unsigned int* refCount;
+	
+
+}
+
+std::map<string,int> mMap;
+mMap["Ram"] = 1;
+mMap.erase()
+mMap.find()
+Mmpa.size()
+mMap.empty()
+mMap.begin()->first()  //key
+mMap.begin()->second() //value
+
+std::map<int,string>::iterator i;
+mMap.
+class Stack{
+	std::vector<Foo> v;
+	for(std::vector<Foo>::iterator i=v.begin();i !=v.end(); i++){
+		cout<<*i<<endl;
+
+
+
+quickSort(int*a, int left, int right){
+	int pivot = a[left+right/2];
+	int i = left;
+	int j = right;
+	while(i<=j){
+		while(a[i]<=pivot)
+			i++;
+		while(a[j]>=pivot)
+			j--;
+		if(i<j)
+			swap them;
+
+	}
+	while(j>left)
+		quicksort(a,left,j);
+	while(i<right)
+		quicksort(a,i,right);
+	}
+}
+
+binarySearch(int[] a, int x){
+	int low = 0;
+	int high = a.length()-1
+	int mid = low+high /2
+	while(low<=high){
+		if x>a[mid]
+			binarySearch(a,mid+1,high);
+		else
+	}
+}
+
+
+
+	

@@ -1,0 +1,240 @@
+
+================================================
+     1 .  ARRAYS
+================================================
+
+------------------------------------------------
+REMOVING A SPECIFIC KEY from array in O(n) time and O(1) space
+------------------------------------------------
+Maintain a separate index that tracks the loop index for the vector.
+  if(v[i] != key) 
+  	v[index++] = v[i]
+
+return index 
+
+------------------------------------------------
+REMOVING DUPLICATES from sorted array in O(n) time and O(1) space
+------------------------------------------------
+Maintain a separate index that tracks the loop index for the vector.
+  if(v[i] != v[i-1]) 
+  	v[index++] = v[i]
+
+return index 
+
+------------------------------------------------
+DICTIONARY ORDERING
+------------------------------------------------
+- The  very last element of the dictionary order is all elements in descending order
+
+- So look for case when a[k]> a[k+1] and all after k are in descending order
+- pick the element from the descending order higher than a[k]. Swap it
+- Reverse the descending ordered part, i.e. after a[k]
+
+
+------------------------------------------------
+     2 .  STRING
+------------------------------------------------
+For strings remmeber to use for(char& c: s)
+
+------------------------------------------------
+Palindrome string
+------------------------------------------------
+Two indices: at start and end. 
+Use isaplhanum() and tolower()
+
+------------------------------------------------
+Reverse sentence
+------------------------------------------------
+-3 calls to reverse()
+
+-Reverse the whole sentence using reverse()
+-then reverse one word at a time. use 
+	while(end = s.find(" ",start) != string:npos)
+		reverse(s.begin()+start,s.begin()+end)
+		start= end+1;
+-
+reverse(s.begin()+start,s.end())
+
+
+------------------------------------------------
+RunLength Encoding/Decoding
+------------------------------------------------
+aaabbbc= 3a3b1c
+
+- Use a second string to copy the results over. like this:
+	results += 
+
+- to_string(integer) and is_digit(char)
+
+
+------------------------------------------------
+Character substitution and removal
+------------------------------------------------
+Eg. replace a with dd and remove all b
+
+-First pass count all 'a', while removing b. Overwrite in the same space.
+- now do s.resize(idx + a_cnt)
+- Then start from the end, and keep moving towards the start replacing all 
+occurences of a with 'dd'
+
+Remember Amazon Echo price reduction problem. remember to use ostringstream
+		
+------------------------------------------------
+Phone number combo
+------------------------------------------------
+For 1234, enumerate all character combo
+
+-Use recursion:
+- use std:array to store the 10 keypad mappings.
+- From string input, get the index into the phone array and use that phone_char_grouping
+
+getPhoneLetter(string s, vecotor<string>* v, string res,index){
+	if(i==s.size()){
+		vec->push_back(res);
+		return;
+	}
+	index = i;
+	for(char&c : phone_char_grouping)
+		i=index;
+		res[i] = c
+		getPhoneLetter(vec,res,s,i++)
+}
+
+
+
+------------------------------------------------
+     3 .  LISTS
+------------------------------------------------
+------------------------------------------------
+MERGING TWO LISTS
+------------------------------------------------
+	-Create a shared pointer to new dummy_node, and have a 'tail' point to it.
+	-call MergeNode(&lowestValueNode,&tail) when both lists have non-NULL nodes .
+	Plese make sure you pass pointers to shared pointers.
+	- Make tail point to non-NULL node once you are out of MergeNode()
+	-return dummy_node->next;
+
+------------------------------------------------
+Reversing a list
+------------------------------------------------
+	-Use prev = nullptr, curr = root ; one_ahead=curr->next; Compute one_ahead
+	- Compute logic using a  middle node with node on either side. And extend it for first node
+	- return prev.
+
+
+------------------------------------------------
+       BST
+------------------------------------------------
+
+
+------------------------------------------------
+Checking if tree is BST
+------------------------------------------------
+- Always check for nullptr first
+- Return false  if node->data is < LOWEST (OR)  > HIGHEST
+- return (checkBST(node->left,min,root->data) && checkBST(node->right,root->data,max) )
+
+-------------------------------------------------------------
+First occurence of a key in a BST
+-------------------------------------------------------------
+1) Always check for nullptr first
+2) If key matches, recurse left of the tree. 
+3) return searchBST(root->data < key ? root->right: root->left , key)
+
+1)In iterative, store the parent value, and call left child when there's key match. 
+2) Handle < key  and  > key cases separately.
+
+-------------------------------------------------------------
+Next largest key in a BST 
+-------------------------------------------------------------
+parent = nullptr; curr = root;
+Look from subtree perspective.
+If subtree value > key, save current as parent, and move current to left child
+If subtree value <= key, we don't care  so we keep moving to right.
+return parent's data when you exit the loop
+
+-------------------------------------------------------------
+K LARGEST ELEMENTS IN BST:
+-------------------------------------------------------------
+Create a vector to store the K elements.
+Call Helper function passing in vec, k and root
+Check tree for null and recurse all the way to the right.
+Check vector size before pushing tree->data and recurse left by calling tree->left.
+Remember to check the size of vector before making a call to right, and left
+
+-------------------------------------------------------------
+LOWEST COMMON ANCESTOR (LCA) of two unique elements IN BST
+-------------------------------------------------------------
+- Consider s to be smaller of the two, b to be larger of the two
+- Three while loops
+-  when root is not between a&b, traverse left or right depending on
+ if it <s or > b.
+ In other words,
+- 	while (tree->data < s  || tree->data > b){
+		while(tree->data < s)
+			tree = tree->right.get();
+		while(tree->data > b)
+			tree = tree->left.get();
+	}
+	return tree;
+
+-------------------------------------------------------------
+INSERITION of KEY IN BST:
+-------------------------------------------------------------
+prev=nullptr; curr = root.
+keep moving left or right until curr = nullptr.
+ check whether node needs to be right or left of parent.
+
+-------------------------------------------------------------
+DELETION of KEY IN BST:
+-------------------------------------------------------------
+1.prev=nullptr; curr = root;
+2. keep moving left or right until curr = nullptr or curr= key
+3 If curr = nullptr, return false.
+4. else, if curr has right node,  pick the leftmost of the right subtree, and replace 
+the value of curr with that of leftmost node. here logic:  rParent = curr; child = curr->right
+5. else, if curr has no right node: 
+	a) if curr is root, replace root with curr->left
+	b)  take curr->left and assign it to either right or left of parent.
+ 
+-------------------------------------------------------------
+CONSTRUCT TREE FROM GIVEN PRE-TRAVERSAL SEQUENECE
+-------------------------------------------------------------
+HINT: User BST Tree check approach
+1.Please note given an in-order traversal, you can get a unique tree structure. Take,{1,2,3}
+2. For pre-order traversal, there's a unique sequence.
+3. Follow the approach of BST check by using min and max bounds for every recursive call.
+	buildTree(){
+		index = 0;
+		return buildTreeHelper(vec,lower_bound,upper_bound,&index)
+	}
+4. Key here is to pass the address of index to helper function so that index is updated after every recursive call.
+5. Check  *index = vec.size , return nullptr
+6. Check vector value <lower_bound || >upperbound, return nullptr;
+7. Increment index.
+8. return unique_ptr<BSTNOde>(new BSTNode{vector value,
+											builTreeHelper(vec,lower_bound,vec[index],index
+											builTreeHelper(vec,vec[index],upper_bound,index)
+										 } 
+							  )
+
+
+-------------------------------------------------------------
+CONSTRUCTT MINIMAL HEIGHT BST TREE FROM A SORTED ARRAY
+-------------------------------------------------------------
+with start = 0; end  = vec.size(); 
+call buildTreeHelper(vector,start,end)
+
+
+
+================================================
+					RECURSION
+================================================
+
+TOWER OF HANOII
+-------------------------------------------------------------
+The key observation is move e all other rings (n-1) except base ring src peg to helper peg.
+Then you push base ring to the destination peg.
+Push n-1 rings back from the helper peg to the destination peg.
+
+Do this until n>0
