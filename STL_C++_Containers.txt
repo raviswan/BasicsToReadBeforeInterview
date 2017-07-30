@@ -1,0 +1,52 @@
+C++ STL CONTAINERS
+
+
+================Stack==================
+stack<int> s;
+s.push() or s.emplace()
+s.pop();
+int a = s.top();
+
+
+
+
+================Queue==================
+queue<int> q;
+q.push() or q.emplace()
+q.pop();
+int a = q.front();
+
+
+
+===============Dequeue==================
+dequeue<int> q;
+dq.push_front() or dq.push_back();
+dq.pop_front() or dq.pop_back();
+dq.front() or dq.back()
+
+
+
+===============String==================
+string s;
+stringstream sstrm;
+sstrm<<s;
+sstrm<<s.str();
+getline(sstrm,s, ',')    - will read a line from a string stream seperated by ',' and store the value one at a time in s
+						So always call it in a loop to get values repeatedly.
+
+s.find("string", pos = 0) - returns pos. else check for string::npos
+s.find('c',pos = 0)
+reverse(s.begin() + 3, s.end() -4);
+sort(s.begin(), s.end());
+
+
+===============vector==================
+vector<int> v;
+v.push()
+v.back()
+v.clear()
+v.erase(v.begin() + 3)
+v.find(elem) != v.end()
+v.begin()
+v.end()
+v.pop_back()   - to remove the last element.
