@@ -60,3 +60,9 @@ v.pop_back()   - to remove the last element.
 		vec.assign( s.begin(), s.end() );
 - Remove element by value
 	v.erase(remove(v.begin(), v.end(),ElemToRemove), v.end());
+
+- Sorting vector
+	sort(v.begin(), v.end()); 
+	OR
+	bool sortByName(const Person &lhs, const Person &rhs) { return lhs.name < rhs.name; }
+	sort(people.begin(), people.end(), sortByName);
