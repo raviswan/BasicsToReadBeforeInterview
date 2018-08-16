@@ -50,3 +50,13 @@ v.find(elem) != v.end()
 v.begin()
 v.end()
 v.pop_back()   - to remove the last element.
+
+- Erasing dupilicates and sorting a vector
+	Method1:
+		sort( vec.begin(), vec.end() );
+		vec.erase( unique( vec.begin(), vec.end() ), vec.end() );
+	Method2:
+		set<int> s( vec.begin(), vec.end() );
+		vec.assign( s.begin(), s.end() );
+- Remove element by value
+	v.erase(remove(v.begin(), v.end(),ElemToRemove), v.end());
