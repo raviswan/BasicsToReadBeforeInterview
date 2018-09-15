@@ -51,6 +51,13 @@ v.begin()
 v.end()
 v.pop_back()   - to remove the last element.
 
+- Initializing vector:
+	vector<int> v(count,value);
+	
+- Initializing 2D vector:
+	int m=3,n=5;
+	vector<vector<int>> dp(m, vector<int>(n,0));
+
 - Erasing dupilicates and sorting a vector
 	Method1:
 		sort( vec.begin(), vec.end() );
