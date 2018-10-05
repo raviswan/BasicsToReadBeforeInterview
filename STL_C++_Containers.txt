@@ -52,12 +52,15 @@ v.end()
 v.pop_back()   - to remove the last element.
 
 - Initializing vector:
-	vector<int> v(count,value);
+	vector<bool> v(count, false);
 	
 - Initializing 2D vector:
 	int m=3,n=5;
 	vector<vector<int>> dp(m, vector<int>(n,0));
-
+	
+- Zeroing out a vector
+	fill(v.begin(), v.end(), 0);
+	
 - Erasing dupilicates and sorting a vector
 	Method1:
 		sort( vec.begin(), vec.end() );
@@ -73,3 +76,7 @@ v.pop_back()   - to remove the last element.
 	OR
 	bool sortByName(const Person &lhs, const Person &rhs) { return lhs.name < rhs.name; }
 	sort(people.begin(), people.end(), sortByName);
+
+- Vector of bools:
+	To keep track of true or false for unknown number of elements.
+	Bitset can only be used for fixed size known at compilation time
