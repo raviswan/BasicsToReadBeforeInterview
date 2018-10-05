@@ -42,14 +42,23 @@ sort(s.begin(), s.end());
 
 ===============vector==================
 vector<int> v;
-v.push()
+v.push_back()
+v.pop_back()
 v.back()
+v.front()
 v.clear()
 v.erase(v.begin() + 3)
-v.find(elem) != v.end()
 v.begin()
 v.end()
-v.pop_back()   - to remove the last element.
+v.assign(s.begin(), s.end())
+v.resize(sizeWeWant);
+
+std::unique(v.begin().v.end())
+std::remove(v.begin(,v.end(),val)
+std::find(v.begin(), v.end(), val)
+std::fill(v.begin(), v.end(), val)
+std::distance(v.begin(), v.end())
+
 
 - Initializing vector:
 	vector<bool> v(count, false);
@@ -62,13 +71,22 @@ v.pop_back()   - to remove the last element.
 	fill(v.begin(), v.end(), 0);
 	
 - Erasing dupilicates and sorting a vector
-	Method1:
+	Method1: unique() call moves all duplicates to the end of the sorted vector.And then erase it
 		sort( vec.begin(), vec.end() );
 		vec.erase( unique( vec.begin(), vec.end() ), vec.end() );
 	Method2:
 		set<int> s( vec.begin(), vec.end() );
 		vec.assign( s.begin(), s.end() );
+	Method3:
+		set<int> s;
+		unsigned size = vec.size();
+		for( unsigned i = 0; i < size; ++i ) s.insert( vec[i] );
+		vec.assign( s.begin(), s.end() );
+		
 - Remove element by value
+	remove(v.begin(), v.end(),ElemToRemove) - 
+	This moves all "ElemToRemove" values to the very end of the vectot and returns the iterator to the very first of all           the removed  elements. Therefore, to erase all "ElemToRemove" , you'd do the following:
+	
 	v.erase(remove(v.begin(), v.end(),ElemToRemove), v.end());
 
 - Sorting vector
