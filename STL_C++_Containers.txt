@@ -39,6 +39,19 @@ s.find('c',pos = 0)
 reverse(s.begin() + 3, s.end() -4);
 sort(s.begin(), s.end());
 
+============unordered_map============
+unordered_map<int,int> hMap;
+hMap[key]=value;
+hMap.count(key) // to check whether the key exists . Returns 0 if it doesnt exist.
+
+============unordered_set============
+unordered_set<int> dict;  			//This is just hash set, except that key and value are the same.
+unordered_set<int> dict(v.begin(),v.end()) 	//Converting vector into a hash set.
+dict.find(elem) != dict.end().    		//finding element in the set
+dict.emplace(elem) or dict.insert(elem)	//elem inserted if not present 		         
+dict.erase(elem)				//elem erased if found
+
+
 
 ===============vector==================
 vector<int> v;
