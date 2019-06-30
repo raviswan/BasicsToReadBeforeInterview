@@ -45,12 +45,19 @@ hMap[key]=value;
 hMap.count(key) // to check whether the key exists . Returns 0 if it doesnt exist.
 
 ============unordered_set============
-unordered_set<int> dict;  			//This is just hash set, except that key and value are the same.
+unordered_set<int> dict;  			//This is just hash map, except that key and value are the same.
 unordered_set<int> dict(v.begin(),v.end()) 	//Converting vector into a hash set.
 dict.find(elem) != dict.end().    		//finding element in the set
-dict.emplace(elem) or dict.insert(elem)	//elem inserted if not present 		         
+dict.emplace(elem) or dict.insert(elem)		//elem inserted if not present 		         
 dict.erase(elem)				//elem erased if found
 
+============unordered_multimap============    //used when same key has multiple values
+unordered_multimap<string,string> hMap;
+hMap.emplace(key, value)			//No [] operator for multimap.
+hMap.erase(key)					//Will erase all the values associated with key
+auto range=matchingMap.equal_range(key);	//finding all values for a given key and browsing thru them
+for(auto it=range.first;it!=range.second;++it){
+	
 
 
 ===============vector==================
