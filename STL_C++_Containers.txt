@@ -44,6 +44,8 @@ unordered_map<int,int> hMap;
 hMap[key]=value;
 hMap.count(key) // to check whether the key exists . Returns 0 if it doesnt exist.
 
+
+
 ============unordered_set============
 unordered_set<int> dict;  			//This is just hash map, except that key and value are the same.
 unordered_set<int> dict(v.begin(),v.end()) 	//Converting vector into a hash set.
@@ -51,15 +53,26 @@ dict.find(elem) != dict.end().    		//finding element in the set
 dict.emplace(elem) or dict.insert(elem)		//elem inserted if not present 		         
 dict.erase(elem)				//elem erased if found
 
+
+
 ============unordered_multimap============    //used when same key has multiple values
 unordered_multimap<string,string> hMap;
 hMap.emplace(key, value)			//No [] operator for multimap.
 hMap.erase(key)					//Will erase all the values associated with key
 auto range=matchingMap.equal_range(key);	//finding all values for a given key and browsing thru them
 for(auto it=range.first;it!=range.second;++it){
+	it->first;
+	it->second
 	
+=======heap=========
+//max heap by default.. Heaps are stored internally as arrays. 2*i+1 and 2*i+2 to access children
+vector<int> v;
+make_heap(v.begin(),v.end()).  // make a heap
+v.push_back(elem); push_heap(v.begin(),v.end());   ///pushing element to heap
+pop_heap(v.begin(),v.end()); v1.pop_back()        ///popping from a heap
+v1.front() // max of a heap
 
-
+make_heap(v.begin(),v.end(),greater<int>()); //min heap
 ===============vector==================
 vector<int> v;
 v.push_back()
@@ -89,6 +102,17 @@ std::distance(v.begin(), v.end())
 	
 - Zeroing out a vector
 	fill(v.begin(), v.end(), 0);
+
+-Appending one vectot to another:
+ 	vecA.insert(vecA.end(),vecB.begin(),vecB.end());
+
+
+- Custom soriting a vector : //Here a Point Struct is sorted based on its value using std::sort
+	static bool sortElementsByValue(Point& left, Point& right){
+		return (left.val<right.val) ? true: false;
+	}
+	sort(pointsA.begin(),pointsA.end(),sortElementsByValue);
+	
 	
 - Erasing dupilicates and sorting a vector
 	Method1: unique() call moves all duplicates to the end of the sorted vector.And then erase it
@@ -102,7 +126,7 @@ std::distance(v.begin(), v.end())
 		unsigned size = vec.size();
 		for( unsigned i = 0; i < size; ++i ) s.insert( vec[i] );
 		vec.assign( s.begin(), s.end() );
-		
+	
 - Remove element by value
 	remove(v.begin(), v.end(),ElemToRemove) - 
 	This moves all "ElemToRemove" values to the very end of the vectot and returns the iterator to the very first of all           the removed  elements. Therefore, to erase all "ElemToRemove" , you'd do the following:
