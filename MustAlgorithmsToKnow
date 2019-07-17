@@ -1,0 +1,21 @@
+1)DUTCH NATIONAL FLAG: (Numbers<Desired Number) should be to left of desired Number, and )numbers > desiredNumber) should be to right of the desired number
+  a) Initial Conditions: low,mid=0; high=size-1;
+  b) Terminating condition: while(mid<=high)
+  c) Core Logic:
+      if(nums[mid]==desiredNum)
+          ++mid;
+      else if(nums[mid]<desiredNum)
+          swap(nums[mid],nums[low]);
+          ++low;
+          ++mid;
+       else if(nums[mid]>desiredNum)
+          swap(nums[mid],nums[high]);
+          --high;
+
+2) MERGE SORT: (aka Divide and Conquer). : O(nlogn) time and O(n) space
+  Key Logic: Split the vector in middle.
+             mergeSort the left half
+             mergeSort the right half
+             merge the two halves (rememeber: merging two sorted vectors using pointers. Always require O(n) space, and O(n) time)
+        
+3) QUICKSORT: (variation of DNF with new random pivot point every time, until start <= end)
