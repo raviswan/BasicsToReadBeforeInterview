@@ -17,5 +17,28 @@
              mergeSort the left half
              mergeSort the right half
              merge the two halves (rememeber: merging two sorted vectors using pointers. Always require O(n) space, and O(n) time)
+    a) Initial Conditions:start=0;end=size-1;
+    b) Terminating condition : if(start>=end) return
+    c) Core Logc:
+        mid=start+(end-start)>>1;
+        mergeSort(v,start,mid);
+        mergeSort(v,mid+1,end);
+        merge(a,start,mid,end) : here merge two sorted vectors, copy the results back into original vector.
+    
+    
         
-3) QUICKSORT: (variation of DNF with new random pivot point every time, until start <= end)
+3) QUICKSORT: Worse case O(n^2),Avg case O(nlogn), Space: O(1)
+     Key Logic:
+     This algo is a variation of DNF with new random pivot point every time.
+     Pick a random pivot. Apply DNF. 
+     From the obtained low and high, Repeat above steps on the lowerHalf of pivot and then on upper-half of pivot
+     
+     a) Initial Conditions:start=0;end=size-1;
+     b) Terminating condition : if(start>=end) return
+     c) Core Logic:
+        -call quickSort(v,start,end)
+        -Pick a random Index and call the element at that index to be pivot.
+        -Call partition(v,start,end,pivot) to return {belowPivotIndex,afterPivotIndex}. 
+          This implementation is DNF because we want (values < pivot) THEN (values==pivot) THEN (values after pivot)
+        - call quickSort(v,start,belowPivotIndex)
+        - call quickSort(v,afterPivotIndex,end)
