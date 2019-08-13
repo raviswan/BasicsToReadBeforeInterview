@@ -42,3 +42,22 @@
           This implementation is DNF because we want (values < pivot) THEN (values==pivot) THEN (values after pivot)
         - call quickSort(v,start,belowPivotIndex)
         - call quickSort(v,afterPivotIndex,end)
+        
+ 4) Binary Search:
+    - Remember only 1 while loop. Recursion is unnecessary.
+    
+      bool binarySearch(array, target) {
+           while(low<=high){
+             mid=low + ((high-low)>>1);
+            if(target<a[mid])
+              high=mid-1;
+            else if(target>a[mid])
+              low=mid+1;
+             else
+              return true;
+           }
+           return false;
+      }
+            
+      
+    
