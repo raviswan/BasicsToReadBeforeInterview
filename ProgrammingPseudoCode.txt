@@ -76,6 +76,12 @@ Sub-array sum
 5) To determine , square root, run binary search with low=1 and high=x. And only one change to algo:
 	- if (mid*mid < x) { low=mid+1;ans=mid; }
 
+6) To find a peak in a regular array where there can be multiple peaks but no two adjacent elements are equal:
+	- Deal with boundary (0 and last element) separately by comparing to its neighbor
+	-  You compare the middle element against either side. If middle is greater than its neighbors, return it.
+	- else if middle < left neightbor, move binary search to left
+	- else If middle < right neighbor, move binary search to right.
+
 ------------------------------------------------
 DICTIONARY ORDERING
 ------------------------------------------------
