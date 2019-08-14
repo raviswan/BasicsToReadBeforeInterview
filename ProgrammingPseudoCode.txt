@@ -1,25 +1,7 @@
 
 ================================================
-     1 .  ARRAYS
+    ARRAYS
 ================================================
-
-------------------------------------------------
-REMOVING A SPECIFIC KEY from array in O(n) time and O(1) space
-------------------------------------------------
-Maintain a separate index that tracks the loop index for the vector.
-  if(v[i] != key) 
-  	v[index++] = v[i]
-
-return index 
-
-------------------------------------------------
-REMOVING DUPLICATES from sorted array in O(n) time and O(1) space
-------------------------------------------------
-Maintain a separate index that tracks the loop index for the vector.
-  if(v[i] != v[i-1]) 
-  	v[index++] = v[i]
-
-return index 
 
 ------------------------------------------------
 Array tricks to explore
