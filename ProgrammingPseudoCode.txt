@@ -64,6 +64,45 @@ Sub-array sum
 	- else if middle < left neightbor, move binary search to left
 	- else If middle < right neighbor, move binary search to right.
 
+--------------------------------------------------
+      PERMUTATION/COMBINATIONS
+------------------------------------------------
+
+- For combination, the comboHelper will do a for-loop with *for-loop-Index* (passed-by-value) getting incremented with every recursive call. 
+	- Remember, terminating condition requires checking vector size()
+	for(...){
+		vector.push_back();
+		comboHelper(forloopIndex+1,...)
+		vector.pop_back();
+	}
+	
+- For permutation, we use swap, not push/pop . The helper will do a for-loop with *main index* (passed-by-value) incrementing with every recursive call.
+	- Remember , terminating condition is to see if mainIndex has reached input size.
+	for(i=mainIndex; .. ;..){
+		swap(nums[mainIndex],nums[i]);
+		permuteHelper(mainIndex+1,...)
+		swap(nums[mainIndex,nums[i])
+	}
+- For permutation with duplicates, same as above only difference is to sort the vector first, and skip duplicates before recursion.
+	-  sort(v.begin(),v.end());
+	-  call helper(index,...)
+	-  helper :
+		for(i=mainIndex; .. ;..){
+			if(i!=index && nums[i]==nums[index]) skip;
+			swap(nums[mainIndex],nums[i]);
+			permuteHelper(mainIndex+1,...)	
+		}
+		
+- In coinSum, to print all combinations, it's just the same as combinationSum where 
+	 for coins loop {
+	     vector.push_back(coins[i])
+	     recursive call (with same forLoopIndex,sum+coins[i])
+	     vector.pop_back()
+	 }
+
+- Refer to powerSetsCombinationPermutationsCoinSum.cpp for actual code
+- Time complexity: Exponential. How? https://stackoverflow.com/questions/13467674/determining-complexity-for-recursive-functions-big-o-notation
+
 ------------------------------------------------
 DICTIONARY ORDERING
 ------------------------------------------------
