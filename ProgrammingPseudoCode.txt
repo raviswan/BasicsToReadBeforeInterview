@@ -124,6 +124,15 @@ In most sub-array sums, you'll have a running sum and a hashMap.
 - Time complexity: Exponential. How? https://stackoverflow.com/questions/13467674/determining-complexity-for-recursive-functions-big-o-notation
 
 ------------------------------------------------
+BACKTRACKING/MAZE
+------------------------------------------------
+- UniquePaths in MxN = (UniquePaths in MxN-1) + (UniquePaths in M-1xN)
+- Need to use ordered map<pair<int,int>,int>.
+- Terminating condition: if (m==0 || n==0) , return 1;
+- Now if they ask you to print all the paths, you can't use the above logic. Then, start from (0,0). Every time you make a call to right or down, push_back  R or D to a vector and recurse. When you reach (row==m-1 && col==n-1), increment ans, and also push the vector to vector<vector>
+
+
+------------------------------------------------
 DICTIONARY ORDERING
 ------------------------------------------------
 - The  very last element of the dictionary order is all elements in descending order
