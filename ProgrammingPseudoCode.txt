@@ -52,9 +52,9 @@ In most sub-array sums, you'll have a running sum and a hashMap.
 		   }
 		 
  
---------------------------------------------------
+================================================
       BINARY SEARCH
-------------------------------------------------
+================================================
 1) This search is done on sorted arrays. Remember the core algo uses only 1 while loop. no recursion. When you see sorted array, it should typically be binary search.
 
 2) To return first element in sorted array with duplicates, the only change is to modify the target<a[mid] check as follows:
@@ -83,11 +83,18 @@ In most sub-array sums, you'll have a running sum and a hashMap.
 	-  You compare the middle element against either side. If middle is greater than its neighbors, return it.
 	- else if middle < left neightbor, move binary search to left
 	- else If middle < right neighbor, move binary search to right.
-
---------------------------------------------------
+	
+	
+================================================
       PERMUTATION/COMBINATIONS
-------------------------------------------------
-
+================================================
+The code structure for these problems are generally like this:
+	a) run for loop
+	b) do some operation, 
+	c) recurse (with incrementing index)
+	d) undo operation
+	e) termination condition at the start
+	
 - For combination, the comboHelper will do a for-loop with *for-loop-Index* (passed-by-value) getting incremented with every recursive call. 
 	- Remember, terminating condition requires checking vector size()
 	for(...){
@@ -123,14 +130,84 @@ In most sub-array sums, you'll have a running sum and a hashMap.
 - Refer to powerSetsCombinationPermutationsCoinSum.cpp for actual code
 - Time complexity: Exponential. How? https://stackoverflow.com/questions/13467674/determining-complexity-for-recursive-functions-big-o-notation
 
-------------------------------------------------
-BACKTRACKING/MAZE
-------------------------------------------------
+================================================
+RECURSION/BACKTRACKING
+================================================
+
+1) Maze Problem:
+========
 - UniquePaths in MxN = (UniquePaths in MxN-1) + (UniquePaths in M-1xN)
 - Need to use ordered map<pair<int,int>,int>.
 - Terminating condition: if (m==0 || n==0) , return 1;
 - Now if they ask you to print all the paths, you can't use the above logic. Then, start from (0,0). Every time you make a call to right or down, push_back  R or D to a vector and recurse. When you reach (row==m-1 && col==n-1), increment ans, and also push the vector to vector<vector>
 
+1 b) Maze with obstacles
+===========
+- when you have obstacles, you'll have three if conditions for recursion. 
+     a) upper row blocked, left col not blocked:
+     	  mMap[make_pair(m,n)] = uniquePathsWithObstacles(grid, m,n-1, mMap);
+     b) left col blocked, upper row not blocked:
+     	  mMap[make_pair(m,n)] = uniquePathsWithObstacles(grid, m-1,n, mMap);
+     c) upper and left unblocked:
+     	  mMap[make_pair(m,n)] = uniquePathsWithObstacles(grid, m-1,n, mMap) + uniquePathsWithObstacles(grid, m,n-1, mMap);
+	  
+- Handle m==0 and n==0 by saving & returning 0 when blocked	
+
+	Other easy solution: https://leetcode.com/problems/unique-paths-ii/discuss/23248/My-C%2B%2B-Dp-solution-very-simple!
+
+2) N-Queens Puzzle
+=======
+Important Aspect: 
+	code  structure is just like combinatorial recursion problem : 
+	a) run for loop b) do some operation,  c) recurse (with incrementing index) d) undo operation
+	
+- Here, rowIndex is incremented by 1. And we recurse only if we placed the queen
+- For each row, we loop thru all columns placing Queen after column, left diagonal & right diagonal conditions are met. 
+- The line after recurse will reset the position of Q  so that we could find new positions.
+
+
+ 3) Word Break Problem:
+ ========
+ Input = "ilikemangotango"
+Output: 
+"i like mango tango" 
+"i like man go tan go" 
+"i like mango tan go" 
+"i like man go tango"
+
+Important aspect: 2 recursive call for every index and hashSet indicating whether a word was at the index.
+
+- Grab substr at every index:
+- You need a hashSet<int> to keep track of whether a word was found at that index i. This is to pop the word and continue forming next bigger word
+- For a given index, if word found from input hash set, add it to wordVec and update hashSet at this index. 
+	- If this is last word of input sentence, add it to ans. 
+	- Else recurse with next index and length set to 1 : 
+		helper(s,hSet,str,index+len,1,ans,wordFoundPos,wordVec);
+- For the same index, if hashSet<int> indicates there was a word there,  pop the word and clear the hashSet field
+-  Recurse to include next index to form larger word .
+        helper(s,hSet,str,index,len+1,ans,wordFoundPos,wordVec); 
+- Code here: https://leetcode.com/submissions/detail/253027047/ 
+	
+================================================
+     3 .  LINKED LISTS
+================================================
+
+Append Function : Write append function of List class that can be re-used. You need to know tail to write this fuction. This function will be useful in many problems especially when sorting a list containing subset of values (e.g. 1,2,3 where you create 3 heads and 3 tails for each value  and  then result list where the 3 lists are appended one after  another. Note you are re-using the nodes and not creating new copies. Refer to interviewcamp for clarification)
+------------------------------------------------
+MERGING TWO LISTS
+------------------------------------------------
+	-Create a shared pointer to new dummy_node, and have a 'tail' point to it.
+	-call MergeNode(&lowestValueNode,&tail) when both lists have non-NULL nodes .
+	Plese make sure you pass pointers to shared pointers.
+	- Make tail point to non-NULL node once you are out of MergeNode()
+	-return dummy_node->next;
+
+------------------------------------------------
+Reversing a list
+------------------------------------------------
+	-Use prev = nullptr, curr = root ; one_ahead=curr->next; Compute one_ahead
+	- Compute logic using a  middle node with node on either side. And extend it for first node
+	- return prev.
 
 ------------------------------------------------
 DICTIONARY ORDERING
@@ -189,48 +266,9 @@ Eg. replace a with dd and remove all b
 occurences of a with 'dd'
 
 Remember Amazon Echo price reduction problem. remember to use ostringstream
-		
-------------------------------------------------
-Phone number combo
-------------------------------------------------
-For 1234, enumerate all character combo
-
--Use recursion:
-- use std:array to store the 10 keypad mappings.
-- From string input, get the index into the phone array and use that phone_char_grouping
-
-getPhoneLetter(string s, vecotor<string>* v, string res,index){
-	if(i==s.size()){
-		vec->push_back(res);
-		return;
-	}
-	index = i;
-	for(char&c : phone_char_grouping)
-		i=index;
-		res[i] = c
-		getPhoneLetter(vec,res,s,i++)
-}
 
 
 
-------------------------------------------------
-     3 .  LISTS
-------------------------------------------------
-------------------------------------------------
-MERGING TWO LISTS
-------------------------------------------------
-	-Create a shared pointer to new dummy_node, and have a 'tail' point to it.
-	-call MergeNode(&lowestValueNode,&tail) when both lists have non-NULL nodes .
-	Plese make sure you pass pointers to shared pointers.
-	- Make tail point to non-NULL node once you are out of MergeNode()
-	-return dummy_node->next;
-
-------------------------------------------------
-Reversing a list
-------------------------------------------------
-	-Use prev = nullptr, curr = root ; one_ahead=curr->next; Compute one_ahead
-	- Compute logic using a  middle node with node on either side. And extend it for first node
-	- return prev.
 
 
 ------------------------------------------------
