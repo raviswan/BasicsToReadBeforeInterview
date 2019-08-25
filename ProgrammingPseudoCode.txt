@@ -84,7 +84,17 @@ In most sub-array sums, you'll have a running sum and a hashMap.
 	- else if middle < left neightbor, move binary search to left
 	- else If middle < right neighbor, move binary search to right.
 	
-	
+7) Median of two sorted arrays:
+	- helper function to handle empty arrays
+	- helper function to handle when one array's greatest < other array's smallest
+	- here consider 4 comparative cases for : (medianIndex+1) vs len1
+	- fnd the smaller of the (midIndex1,midIndex2). Lets call it target.  
+	   In the other array, compute index  whose value <= target using binary search using record and move-on. We call this 
+	       newIndex =findIndexLessThanMidValue().
+	- Now compute numIndicesToAccountFor. 
+	*  If it is zero, you handle is separately 
+	*  If it is non-zero,move to right of numIndex1 (& in nums2) storing prev and curr until numIndicesToAccountFor=0
+		
 ================================================
       PERMUTATION/COMBINATIONS
 ================================================
