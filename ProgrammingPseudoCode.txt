@@ -202,7 +202,125 @@ Important aspect: 2 recursive call for every index and hashSet indicating whethe
      3 .  LINKED LISTS
 ================================================
 
-Append Function : Write append function of List class that can be re-used. You need to know tail to write this fuction. This function will be useful in many problems especially when sorting a list containing subset of values (e.g. 1,2,3 where you create 3 heads and 3 tails for each value  and  then result list where the 3 lists are appended one after  another. Note you are re-using the nodes and not creating new copies. Refer to interviewcamp for clarification)
+A. Append Function : 
+------------------------------------------------
+Write append function of List class that can be re-used. You need to know tail to write this fuction. 
+This function will be useful in many problems especially when sorting a list containing subset of values 
+(e.g. 1,2,3 where you create 3 heads and 3 tails for each value  and  then result list where the 3 lists are 
+appended one after  another. Note you are re-using the nodes and not creating new copies. 
+Refer to interviewcamp for clarification)
+
+
+B. Detect Cycle in Linked List (this logic is important. Notice the if loop part is identical to while loop logic):
+------------------------------------------------
+slow=head; 
+fast = head;
+while(fast!=null){
+	fast=fast->next;
+	if(fast==slow)
+		return true; //cycle exists
+	if(fast!=null){
+		fast=fast->next;
+		if(fast==slow)
+			return true;
+	}
+	slow=slow->next;
+}
+return false;
+
+
+C. Length of Cycle in List:
+------------------------------------------------
+Once you determine fast meets slow, exit the loop, move fast 1 node at a time until it meets slow again. Compute the length
+
+
+D. Where Cycle starts in a List
+------------------------------------------------
+Detect a cycle, then find the length of the cycle L. Once you know the length of the cycle, reset fast and slow back to head of the list. Then,  move fast node forward by L nodes. Now, advance both pointers by 1 until they meet. The node at which they meet will be the start of the cycle.
+
+
+E. Reversing a list
+------------------------------------------------
+	-Use prev = NULL, curr = root ; one_ahead=curr->next; Compute one_ahead
+	- Compute logic using a  middle node with node on either side. And extend it for first node
+	- return prev.
+	- If you have to reverse using recursion, use a helper like this:
+		recurseReverseList(ListNode* currNode, ListNode* prevNode, ListNode** rootNode)
+	  Don't forge to initalize rootNode = &head;
+	  
+	  
+F. Merge Sorted Lists
+=======================
+	- Relatively straightforward. Figure out the root node first. Set it aside. Keep two pointers, one for each list.
+	- while(list1 && list2)
+		Pick the minimum.
+		
+G. Palindrome List
+=========
+-  Do fast-slow trick to get to middle of the list. Important logic
+  Node* fast=head;
+  Node* slow=head;
+  while(fast->next && fast->next->next){
+  	slow=slow->next;
+	fast=fast->next->next;
+  }
+- Now, slow points to middle. Save slow->next as head of second half of list  that you gotta reverse.
+- slow->next is then set to NULL
+-Once the list is reversed, compare the head and new reversed list node by node for equality
+- If second list doesnt return null, it means it's not palindrome! Make sure to put that slow->next back to saved value.
+
+		
+H. LRU Cache
+======
+- Cache is a linked list. It will be list of keys. 
+- At any given point, the last element of the list will be the LRU element (ready to be evicted if need be).
+- When you read from a cache, that entry is updated to the head of the list if the entry is present. If the entry is not present, you return invalid. 
+- When you write to cache, again you update the entry to the head of the list if it exists. If it doesnt exist, you add that entry to the front of the list. If the cache size is full, then you gotta evict the LRU element, which will be the last element of the list bfore adding the element to the front of the list.
+- To implement, we need the one STL list and two STL unordered_maps as follows:
+	- list<int> cache
+	- unordered_map<int, list<int>::iterator> hMap
+	- unordered_map<int, int> kvMap;
+- We need to implement the following functions:
+	- int get(key) : will call updateCache()
+	- void put(key,value)   :  will call updateCache() and/or evict()
+	- void evict()
+	- void updateCache(key)
+- Be familiar with C++ STL list.
+
+
+================================================
+     3 .  STACK
+================================================
+
+A. Postfix Expression
+======
+ - Need only one stack<string> for operands. when you encounter operator, you pop two from stack and process it.
+ - Use stoi() for computation with operator and to_string() to put it back in stack
+ 
+ 
+B. Infix expression aka Basic Calculator (with or without paranthesis)
+=============
+- KEY TAKEAWAYS: 2 stacks, assigning priority to operators, handling all operators in stack >= current operator priotity, and processing all operatots until you hit '(' when you encounter ')'
+
+- Set priority value for operators as follows:
+	int getOperatorPrecedence(char c) {
+        	if (c=='*' || c=='/')
+            		return 2;
+       		if (c=='+' || c=='-')
+            		return 1;
+        	else if (c=='(')
+            		return 0;
+        	else
+            	    return -1; //  for ')'
+ 	}
+- We need two stacks : operand stack and operator stack
+- Anytime you see operand , put it in the operand stack.
+- When you see operator, check to see if the top of operator stack has >= than the current operator. If it does, process operand until the operator on the stack is lower than the current operator.
+-  If spaces are allowed, keep storing digits until you hit space and that becomes operand. Refer to my leetcode solution. You call storeOperand() before virtually every character except digit
+- Refer to : https://leetcode.com/submissions/detail/229513107/
+	
+
+
 ------------------------------------------------
 MERGING TWO LISTS
 ------------------------------------------------
@@ -212,12 +330,8 @@ MERGING TWO LISTS
 	- Make tail point to non-NULL node once you are out of MergeNode()
 	-return dummy_node->next;
 
-------------------------------------------------
-Reversing a list
-------------------------------------------------
-	-Use prev = nullptr, curr = root ; one_ahead=curr->next; Compute one_ahead
-	- Compute logic using a  middle node with node on either side. And extend it for first node
-	- return prev.
+
+	
 
 ------------------------------------------------
 DICTIONARY ORDERING
