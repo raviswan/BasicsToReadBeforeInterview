@@ -313,12 +313,52 @@ B. Infix expression aka Basic Calculator (with or without paranthesis)
         	else
             	    return -1; //  for ')'
  	}
-- We need two stacks : operand stack and operator stack
-- Anytime you see operand , put it in the operand stack.
-- When you see operator, check to see if the top of operator stack has >= than the current operator. If it does, process operand until the operator on the stack is lower than the current operator.
--  If spaces are allowed, keep storing digits until you hit space and that becomes operand. Refer to my leetcode solution. You call storeOperand() before virtually every character except digit
+- if you see operand , put it in the operand stack<int>
+- else if when you see '(', put it on operator stack<char>
+- else if when you see operator ')', process operand until the operator on the stack is '('.
+- else if when you see operator, check to see if the top of operator stack has >= than the current operator. If it does, process operand until the operator on the stack is lower than the current operator.
+-  If spaces are allowed, keep storing digits until you hit space and that becomes operand.
+Refer to my leetcode solution. You call storeOperand() before virtually every character except digit
 - Refer to : https://leetcode.com/submissions/detail/229513107/
+
+
+================================================
+     4 .  QUEUE
+================================================
+
+A. Ring Buffer or Circular Queue
+========
+- KEY TAKEAWAY:  back = (back+1)%k;front=(front+1)%k;
+- Implemented as array of fixed size where you insert in the back and dequeue from front.
+- In the class definition, have a "length" variable that increments with every enqueue and decrements with every dequeue.
+- When length==0, queue is empty; when length==k, queue is full.
+- enqueue():
+	v[back] = value;
+	rear=back;
+        back = (back+1)%k;
+        ++length;
+- dequeue():
+	v[front]=-1;
+        front=(front+1)%k;
+        length--;
 	
+
+B. Sliding Window Maximum
+=========
+- Remember any sliding window problem is almost always queue
+- use deque because you need to iterate through the queue
+- First walk through k values and store the max of those in output vector.
+- From then on, loop through remaining input vector one element at a time.
+	 - If new element being considered is > prev max, store the new one.
+	 -  If element being removed is the max, you gotta find new max then.
+	 -  Else retain the lastly added vector value as new max
+	 
+	 
+C. Implementing Max in Queue in 0(1) lookup
+=======
+Maintain two queues. One regular queue and another dequeue for storing max. Dequeueing is removing element from front of dequeue, enqueuing is more subtle. When the element to be added is > back of dequeue, keep removing all elements from back
+until you find element >= current element.
+
 
 
 ------------------------------------------------
