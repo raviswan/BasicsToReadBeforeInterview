@@ -11,6 +11,64 @@ Array tricks to explore
 - See if you can have start and end pointers and move towards the middle.
 - Using dutch national flag.
 
+================================================
+    STRING
+================================================
+
+1. Palindrome string
+-----------
+	-Two indices: at start and end. 
+	- Use isaplhanum() and tolower()
+
+
+2.  Reverse sentence
+------------
+	3 calls to reverse()
+	     -Reverse the whole sentence using reverse()
+	     -then reverse one word at a time. use 
+	     - while(end = s.find(" ",start) != string:npos)
+			reverse(s.begin()+start,s.begin()+end)
+			start= end+1;
+	     -reverse(s.begin()+start,s.end())
+
+
+3. RunLength Encoding/Decoding
+--------------
+	aaabbbc= 3a3b1c
+	- Use a second string to copy the results over. like this : results += 
+	- to_string(integer) and is_digit(char)
+	
+	
+	
+4. Character substitution and removal
+---------------
+      Eg. replace a with dd and remove all b
+
+	-First pass count all 'a', while removing b. Overwrite in the same space.
+	- now do s.resize(idx + a_cnt)
+	- Then start from the end, and keep moving towards the start replacing all 
+           occurences of a with 'dd'
+
+	Remember Amazon Echo price reduction problem. remember to use ostringstream
+
+
+5. Minimum Window Substring (leetcode 76)
+-------------
+	Given a string S and a string T, find minimum window in S that contains all the characters in T.
+	Example:
+	Input: S = "ADOBECODEBANC", T = "ABC"
+	Output: "BANC"
+
+This is a two pointer solution where you keep moving right pointer until you find a substring that contains all characters of target. Once that happens, you have to start moving left pointer thereby shrinking the substring window to find min substring(if it exists) until you find a substring that doesn't contain all target charcters. 
+Now, stop moving left pointer, return the new left pointer and start expanding right pointer again and repeat the process.
+
+To know whether a substring contains target characters, we need two maps. Target will be unordered_map and the other will be map<char,int> 
+- Run a forloop for endIndex.
+- If character is found in target, save that index in vector, call doesWordContainTarget(targetMap,wordSoFarMap).
+	If yes, call checkForTargetInWordSoFar() where the left pointer loops goes through values stored in vector.
+	
+
+
 ------------------------------------------------
 Sub-array sum
 ------------------------------------------------
@@ -328,7 +386,7 @@ Refer to my leetcode solution. You call storeOperand() before virtually every ch
 
 A. Ring Buffer or Circular Queue
 ========
-- KEY TAKEAWAY:  back = (back+1)%k;front=(front+1)%k;
+- KEY TAKEAWAY:  back = (back+1)%k;front=(front+1)%k; have a length variable to keep track of elements queued/enqueued
 - Implemented as array of fixed size where you insert in the back and dequeue from front.
 - In the class definition, have a "length" variable that increments with every enqueue and decrements with every dequeue.
 - When length==0, queue is empty; when length==k, queue is full.
@@ -383,53 +441,6 @@ DICTIONARY ORDERING
 - Reverse the descending ordered part, i.e. after a[k]
 
 
-------------------------------------------------
-     2 .  STRING
-------------------------------------------------
-For strings remmeber to use for(char& c: s)
-
-------------------------------------------------
-Palindrome string
-------------------------------------------------
-Two indices: at start and end. 
-Use isaplhanum() and tolower()
-
-------------------------------------------------
-Reverse sentence
-------------------------------------------------
--3 calls to reverse()
-
--Reverse the whole sentence using reverse()
--then reverse one word at a time. use 
-	while(end = s.find(" ",start) != string:npos)
-		reverse(s.begin()+start,s.begin()+end)
-		start= end+1;
--
-reverse(s.begin()+start,s.end())
-
-
-------------------------------------------------
-RunLength Encoding/Decoding
-------------------------------------------------
-aaabbbc= 3a3b1c
-
-- Use a second string to copy the results over. like this:
-	results += 
-
-- to_string(integer) and is_digit(char)
-
-
-------------------------------------------------
-Character substitution and removal
-------------------------------------------------
-Eg. replace a with dd and remove all b
-
--First pass count all 'a', while removing b. Overwrite in the same space.
-- now do s.resize(idx + a_cnt)
-- Then start from the end, and keep moving towards the start replacing all 
-occurences of a with 'dd'
-
-Remember Amazon Echo price reduction problem. remember to use ostringstream
 
 
 
