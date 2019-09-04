@@ -16,7 +16,7 @@
 	- if only 2 transactions are allowed, it's lot more complicated.
 
 - Rotaing an array k times (LC:189): 
-	Use three reverse calls just as in string reversal. use k=k%sz for k> sz 
+	Use three reverse calls just as in sentence reversal. use k=k%sz for k> sz 
 
  2-D Array
 ------------------------
@@ -58,7 +58,47 @@
 	- If target>e; ++row;
 	Do this while(row<m && col >=0)
 	
+============================================
+Sub-array sum
+============================================
+In most sub-array sums, you'll have a running sum and a hashMap when are considering successive elements.
+
+1: To determine max sum in array with  +ve & -ve, you have to determine local max at every index and global max across all indices. Return global max.
+
+2: To determine *NUMBER* of subarrays that sum to K, keep a running sum
+	a) hMap[0]++
+	b) if(hMap.count(sum-k)) ans+= hMap[sum-k];
+	c) hMap[sum]++
 	
+3: To check if the NON-negative array has a continuous subarray of size at least 2 that sums up to a multiple of k
+ 	Key: Remember remainder theorem: (A+(n * k)) % k = A%k.
+  	a) hMap[0]=-1;  //to handle two successive zeros.
+        b) runningSum %= k;  //when k!=0
+        c) if(hMap.count(runningSum)){
+                if(i-hMap[runningSum] > 1)
+                    return true;
+            }
+            else
+                hMap[runningSum]=i;
+ 
+ 4. 3 sum or  4 sum problem where any a+b+c=target in a given array, it follows a different pattern as follows.
+ 	- sort the vector first
+	- Outer for-loop runs the lenght of vector.
+	- Last two nums will be taken from start and end of the vector converging inwards in a while loop
+		 for(i=0;...){
+		 	newTarget=target-nums[i] ; j=i+1; k=nums.size()
+		 	while(j<k) {
+				if(nums[j]+nums[k] < newTarget)
+					j++;
+				if(nums[j]+nums[k] > newTarget)
+					--k;
+				else (nums[j]+nums[k]==target)
+			   		store the values, eliminate duplicates for nums[j] and nums[j] using two while loops
+		  	}
+			another while loop for eliminating duplicates of nums[i]
+		   }
+		 
+ 	
 	
 ================================================
     STRING
@@ -129,47 +169,7 @@ s: "abab" p: "ab"
 	- The hashmap didn't contain the character at the next Index. In that case, move the loop Index to the next index.
 	- Hashmap contained the character at next index, but the outgoing character didnt match the incoming character. In that case, just increment the index by 1.
 
-------------------------------------------------
-Sub-array sum
-------------------------------------------------
-In most sub-array sums, you'll have a running sum and a hashMap when are considering successive elements.
 
-1: To determine max sum in array with  +ve & -ve, you have to determine local max at every index and global max across all indices. Return global max.
-
-2: To determine *NUMBER* of subarrays that sum to K, keep a running sum
-	a) hMap[0]++
-	b) if(hMap.count(sum-k)) ans+= hMap[sum-k];
-	c) hMap[sum]++
-	
-3: To check if the NON-negative array has a continuous subarray of size at least 2 that sums up to a multiple of k
- 	Key: Remember remainder theorem: (A+(n * k)) % k = A%k.
-  	a) hMap[0]=-1;  //to handle two successive zeros.
-        b) runningSum %= k;  //when k!=0
-        c) if(hMap.count(runningSum)){
-                if(i-hMap[runningSum] > 1)
-                    return true;
-            }
-            else
-                hMap[runningSum]=i;
- 
- 4. 3 sum or  4 sum problem where any a+b+c=target in a given array, it follows a different pattern as follows.
- 	- sort the vector first
-	- Outer for-loop runs the lenght of vector.
-	- Last two nums will be taken from start and end of the vector converging inwards in a while loop
-		 for(i=0;...){
-		 	newTarget=target-nums[i] ; j=i+1; k=nums.size()
-		 	while(j<k) {
-				if(nums[j]+nums[k] < newTarget)
-					j++;
-				if(nums[j]+nums[k] > newTarget)
-					--k;
-				else (nums[j]+nums[k]==target)
-			   		store the values, eliminate duplicates for nums[j] and nums[j] using two while loops
-		  	}
-			another while loop for eliminating duplicates of nums[i]
-		   }
-		 
- 
 ================================================
       BINARY SEARCH
 ================================================
