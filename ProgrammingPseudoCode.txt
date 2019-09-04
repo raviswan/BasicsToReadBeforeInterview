@@ -10,6 +10,10 @@ Array tricks to explore
 - See if you can traverse from end to front instead of regular front to end.
 - See if you can have start and end pointers and move towards the middle.
 - Using dutch national flag.
+- For Stock Buy and Sell :
+	- remember to store minSoFar if only 1 transaction is allowed.
+	- For multiple transactions,keep taking successive diffs and adding it to sum if diffs > 0
+	- if only 2 transactions are allowed, it's lot more complicated.
 
 ================================================
     STRING
@@ -67,12 +71,23 @@ To know whether a substring contains target characters, we need two maps. Target
 - If character is found in target, save that index in vector, call doesWordContainTarget(targetMap,wordSoFarMap).
 	If yes, call checkForTargetInWordSoFar() where the left pointer loops goes through values stored in vector.
 	
+6. Find All Anagrams in a String (LC: 438)
+---------
+Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
+Input:
+s: "abab" p: "ab"
 
+-  We store the characters of the target string in hashMap. and also compute the targetSum but adding the integer values of all the characters in targetString
+-  Its a valid anagram match when hashMap.count() returns TRUE for every character AND the computedSum=targetSum
+-  Once you find anagram, start a loop and check to see if the character to be added next equals first index of the current anagram. If so, keep moving to the right until you find a non-match. 
+- Non-match could be of two kinds:
+	- The hashmap didn't contain the character at the next Index. In that case, move the loop Index to the next index.
+	- Hashmap contained the character at next index, but the outgoing character didnt match the incoming character. In that case, just increment the index by 1.
 
 ------------------------------------------------
 Sub-array sum
 ------------------------------------------------
-In most sub-array sums, you'll have a running sum and a hashMap.
+In most sub-array sums, you'll have a running sum and a hashMap when are considering successive elements.
 
 1: To determine max sum in array with  +ve & -ve, you have to determine local max at every index and global max across all indices. Return global max.
 
@@ -142,7 +157,7 @@ In most sub-array sums, you'll have a running sum and a hashMap.
 	- else if middle < left neightbor, move binary search to left
 	- else If middle < right neighbor, move binary search to right.
 	
-7) Median of two sorted arrays:
+7) Median of two sorted arrays (lc:4)
 	- helper function to handle empty arrays
 	- helper function to handle when one array's greatest < other array's smallest
 	- here consider 4 comparative cases for : (medianIndex+1) vs len1
@@ -414,7 +429,7 @@ B. Sliding Window Maximum
 	 
 C. Implementing Max in Queue in 0(1) lookup
 =======
-Maintain two queues. One regular queue and another dequeue for storing max. Dequeueing is removing element from front of dequeue, enqueuing is more subtle. When the element to be added is > back of dequeue, keep removing all elements from back
+Maintain two queues. One regular queue and another deque for storing max. Dequeueing is removing element from front of deque, enqueuing is more subtle. When the element to be added is > back of deque, keep removing all elements from back
 until you find element >= current element.
 
 
