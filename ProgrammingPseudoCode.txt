@@ -3,18 +3,63 @@
     ARRAYS
 ================================================
 
-------------------------------------------------
-Array tricks to explore
-------------------------------------------------
+ Array tricks to explore
+---------------------------------------
 - Having a separate index from loop index as in above two cases.
 - See if you can traverse from end to front instead of regular front to end.
 - See if you can have start and end pointers and move towards the middle.
 - Using dutch national flag.
+
 - For Stock Buy and Sell :
 	- remember to store minSoFar if only 1 transaction is allowed.
 	- For multiple transactions,keep taking successive diffs and adding it to sum if diffs > 0
 	- if only 2 transactions are allowed, it's lot more complicated.
 
+- Rotaing an array k times (LC:189): 
+	Use three reverse calls just as in string reversal. use k=k%sz for k> sz 
+
+ 2-D Array
+------------------------
+
+- RotateImage 
+	Reverse() followed by swapping i,j
+
+
+- Set Matrix  Zeroes (lc 73):
+	- to delay the row manipulation until you get to row below by using two flags:clearCurrentRow and clearPreviousRow.
+	- If you encounter zero for a column, zero out only columns above. 
+	- If column above has value zero, set current element to zero
+	- Handle last row using clearPreviowRowFlag
+
+
+- Diagnose Traverse of 2D matrix (lc 498):
+	- Only two movements to consider: Diagonally downward to the left, OR Diagonally upward to the right.
+	- Diagonal motion is where row is increased by 1 and col is decremented by 1 or vice-versa
+	- When you hit top row, you either move to right or if you have reached last col, move down
+	- when you hit leftmost col, you either move down or if you have reached last row, move right.
+	- Exit the loop when you getto the last element.
+	
+	
+- Spiral Traverse (lc 54):
+	- Only three things are needed: matrix size (mxn), startRow, startCol
+	- For every new iteration: 
+		m -= 2
+		n -= 2
+		startRow +=1
+		startCol +=1
+	- 4 for-loops for every (m,n) pair.
+	- IMPORTANT:  In the 3rd and 4th for-loops, do extra checks in for-loop initialization itself to make sure we are not 		traversing the same row, col. This is to handle 1 row,1 col case.
+	
+	
+- Search in Sorted 2D Matrix (lc 248)
+	- Start with top rightmost element . Lets call it e.
+	- If target==e, return true;
+	- If target<e; --col;
+	- If target>e; ++row;
+	Do this while(row<m && col >=0)
+	
+	
+	
 ================================================
     STRING
 ================================================
