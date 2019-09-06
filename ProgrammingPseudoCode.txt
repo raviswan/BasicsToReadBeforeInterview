@@ -5,10 +5,11 @@
 
  Array tricks to explore
 ---------------------------------------
-- Having a separate index from loop index as in above two cases.
+- Having a separate index from loop index.
 - See if you can traverse from end to front instead of regular front to end.
 - See if you can have start and end pointers and move towards the middle.
 - Using dutch national flag.
+- See if you can start from middle and expand outwards.
 
 - For Stock Buy and Sell :
 	- remember to store minSoFar if only 1 transaction is allowed.
@@ -104,6 +105,11 @@ In most sub-array sums, you'll have a running sum and a hashMap when are conside
     STRING
 ================================================
 
+KEY TAKEAWAYS:
+- To know if a substring characters is part of another bigger substring, put target word as map and word-to-check in hashMap and just compare the counts
+- To know if the word is anagram of another,  put the chars in hashmap and also keep track of the sum of all chars.
+- To know if string B is rotated version of A, look for A+A.find(B) provided lengths are same
+
 1. Palindrome string
 -----------
 	-Two indices: at start and end. 
@@ -151,10 +157,11 @@ In most sub-array sums, you'll have a running sum and a hashMap when are conside
 This is a two pointer solution where you keep moving right pointer until you find a substring that contains all characters of target. Once that happens, you have to start moving left pointer thereby shrinking the substring window to find min substring(if it exists) until you find a substring that doesn't contain all target charcters. 
 Now, stop moving left pointer, return the new left pointer and start expanding right pointer again and repeat the process.
 
-To know whether a substring contains target characters, we need two maps. Target will be unordered_map and the other will be map<char,int> 
+To know whether a substring contains target characters, we need two maps. Target will be map<char,int> and substring  will be unordered_map<char,int> 
 - Run a forloop for endIndex.
 - If character is found in target, save that index in vector, call doesWordContainTarget(targetMap,wordSoFarMap).
 	If yes, call checkForTargetInWordSoFar() where the left pointer loops goes through values stored in vector.
+	
 	
 6. Find All Anagrams in a String (LC: 438)
 ---------
@@ -170,6 +177,24 @@ s: "abab" p: "ab"
 	- Hashmap contained the character at next index, but the outgoing character didnt match the incoming character. In that case, just increment the index by 1.
 
 
+7. Longest Palindrome substring (lc 5):
+-------
+ - KEY TAKEAWAY: For each index, check oddPalindrome and evenPalindrome across the entire length of input string 
+ 
+ - This is O(N^2). 
+ - Outerloop is to go through each index. 
+-  Inner loop will expand outwards from that index on both sides. Handle odd and even palindromes for every index.
+	- For odd case, start with given index.
+	- For even case, think of starting point as between current index and previous one. Makes it easy to visualize
+
+8. Big Integer Multiply (lc 43):
+- KEY TAKEAWAY: Use a hashMap<int,vector<int>> and stack. hashMap key corresponds to the column whose values need to be added 		to get final sum (here, first col is 4+0+0). Prefix number of zeros before you start populating the row.
+	E.g. 444*111 =   444
+	        4440
+	       44400 
+    - Handle carry outside the loop for both multiply and then final summation operations.
+    - Use stack to store the final sum by *iterating (yes, iterating ) through hMap index and pop out the result into string.
+	
 ================================================
       BINARY SEARCH
 ================================================
