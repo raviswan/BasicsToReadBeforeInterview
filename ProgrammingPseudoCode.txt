@@ -189,7 +189,8 @@ s: "abab" p: "ab"
 
 8. Big Integer Multiply (lc 43):
 - KEY TAKEAWAY: Use a hashMap<int,vector<int>> and stack. hashMap key corresponds to the column whose values need to be added 		to get final sum (here, first col is 4+0+0). Prefix number of zeros before you start populating the row.
-	E.g. 444*111 =   444
+	E.g. 444*111 =   
+		 444
 	        4440
 	       44400 
     - Handle carry outside the loop for both multiply and then final summation operations.
@@ -398,6 +399,15 @@ F. Merge Sorted Lists
 	- while(list1 && list2)
 		Pick the minimum.
 		
+I. Merge k sorted lists (lc 23)
+-------
+- Find minimum value first. Store that as root node. 
+- Use a hashset to store all the nodes, grab the minumum node, add it to final list,  and then erase the min node and add minNode->next
+- while(hashSet not empty){
+	walk through hash set and grab the minimum node from the hashSet and add to final list
+   }
+   
+   
 G. Palindrome List
 =========
 -  Do fast-slow trick to get to middle of the list. Important logic
@@ -432,7 +442,7 @@ H. LRU Cache
 
 
 ================================================
-     3 .  STACK
+     4 .  STACK
 ================================================
 
 A. Postfix Expression
@@ -466,7 +476,7 @@ Refer to my leetcode solution. You call storeOperand() before virtually every ch
 
 
 ================================================
-     4 .  QUEUE
+     5 .  QUEUE
 ================================================
 
 A. Ring Buffer or Circular Queue
@@ -503,7 +513,7 @@ Maintain two queues. One regular queue and another deque for storing max. Dequeu
 until you find element >= current element.
 
 ================================================
-     3 .  GRAPHS
+     6 .  GRAPHS
 ================================================
 Time complexity: O(V+E) 
 Space Complexity: O(V)
@@ -576,6 +586,38 @@ Output: 5
 	- VERY IMPORTANT: ensure the false is percolated all the way up for recursive DFS calls.
 
 
+
+================================================
+     7. LineSweep
+================================================
+The common sequence in most Line Sweep solutions is:
+	- break down intervals into Points.
+	- sort the points
+	- loop through them
+	
+	
+Merge Intervals (lc: 56):
+---------
+- Make sure to remove duplicate elements from input vector first
+- Created a sorted Point vector using custom comparator for sorting.
+- Use count variable that increments for start Point, and decrements for end Point
+
+Skyline Problem (lc: 218)
+------
+ Seperate points as startPoints and endPoints. Each point is of the type Point. 
+ Sort the points in ascending order based on x-value.
+	-For points with same x-value, startPoint comes before endPoint
+	- For startPoints/endPoints with same x-value but multiple heights, sort them in descending order.
+Walk through the vector of points:
+If startPoint:
+	If currentHeight>maxHeight, update answer. And heapify height vector.
+	Else only heapify height vector
+If endPoint:
+	Handle duplicate endPoints with different heights first. (More explanation in the code)
+	If endPoint height ==currentMaxHeight, remove currentMax and find nextMax from the heap
+	else, remove height from heap and heapify.
+	
+	
 ------------------------------------------------
 MERGING TWO LISTS
 ------------------------------------------------
