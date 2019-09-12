@@ -62,27 +62,31 @@
 ============================================
 Sub-array sum
 ============================================
-In most sub-array sums, you'll have a running sum and a hashMap when are considering successive elements.
+In most sub-array sums with successive elements , you'll have a running sum and a hashMap that stores sum in some fashion. 
+Key TAKEAWAY: At given index: sum - (sum-k) will result in target k
 
-1: To determine max sum in array with  +ve & -ve, you have to determine local max at every index and global max across all indices. Return global max.
+1: To determine max sum in array with  +ve & -ve, you have to determine local max at every index and global max across all indices. Return global max. (lc: 53)
 
-2: To determine *NUMBER* of subarrays that sum to K, keep a running sum
-	a) hMap[0]++
-	b) if(hMap.count(sum-k)) ans+= hMap[sum-k];
-	c) hMap[sum]++
+2: Subarray Sum Equals K: To determine *NUMBER* of subarrays that sum to K (lc: 560)
+	- KEY Understand that at given index: sum - (sum-k) will result in target k. So the goal is to know whether sum-k was 	     seen earlier and if so, how many times:
+		 if(hMap.count(sum-k)) 
+		 	ans+= hMap[sum-k];
+		hMap[sum]++
+	- Don't forget hMap[0]++
 	
-3: To check if the NON-negative array has a continuous subarray of size at least 2 that sums up to a multiple of k
+	
+3: To check if the NON-negative array has a continuous subarray of size at least 2 that sums up to a multiple of k (lc: 523)
  	Key: Remember remainder theorem: (A+(n * k)) % k = A%k.
-  	a) hMap[0]=-1;  //to handle two successive zeros.
+  	a) hMap[0]=-1;  //to handle the case [0,0]
         b) runningSum %= k;  //when k!=0
         c) if(hMap.count(runningSum)){
                 if(i-hMap[runningSum] > 1)
                     return true;
             }
-            else
+            else //to handle [0,0]
                 hMap[runningSum]=i;
  
- 4. 3 sum or  4 sum problem where any a+b+c=target in a given array, it follows a different pattern as follows.
+ 4. 3 sum or  4 sum problem where any a+b+c=target in a given array, it follows a different pattern as follows (lc: 15,16,18)
  	- sort the vector first
 	- Outer for-loop runs the lenght of vector.
 	- Last two nums will be taken from start and end of the vector converging inwards in a while loop
@@ -592,15 +596,16 @@ Output: 5
 ================================================
 The common sequence in most Line Sweep solutions is:
 	- break down intervals into Points.
-	- sort the points
-	- loop through them
+	- sort the points using custom comparator
+	- loop through the points
 	
 	
 Merge Intervals (lc: 56):
 ---------
 - Make sure to remove duplicate elements from input vector first
 - Created a sorted Point vector using custom comparator for sorting.
-- Use count variable that increments for start Point, and decrements for end Point
+- Use count variable that increments for start Point, and decrements for end Point. 
+- When count is zero for both start and endPoint, it becomes a legit interval.
 
 Skyline Problem (lc: 218)
 ------
@@ -617,7 +622,17 @@ If endPoint:
 	If endPoint height ==currentMaxHeight, remove currentMax and find nextMax from the heap
 	else, remove height from heap and heapify.
 	
-	
+Meeting Rooms (lc: 252,253) : You gotta return min number of rooms given a schedule
+-------
+   - In the custom comparator endPoint needs to come before startPoint when the values are equal.
+   - Increment and decrement count as before. However, when cnt in startPoint exceeds minRooms, you increment minRooms
+   	 if(p.start) {
+                ++cnt;
+                if(cnt > minRooms) 
+                    ++minRooms;
+          } else 
+                --cnt;
+
 ------------------------------------------------
 MERGING TWO LISTS
 ------------------------------------------------
