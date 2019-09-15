@@ -445,6 +445,22 @@ H. LRU Cache
 - Be familiar with C++ STL list.
 
 
+I. Removing duplicates in a List: O(n^2):
+=========
+checkDup(Node* root){
+	Node* current = root; Node* runner;
+	while(current!= null){
+		runner = current;
+		while(runner.next != null){
+			if(runner.next.data==current.data)
+				runner.next = runner.next.next
+			else
+				runner = runner.next
+		}
+		current = current.next
+	}
+}
+
 ================================================
      4 .  STACK
 ================================================
@@ -655,11 +671,6 @@ DICTIONARY ORDERING
 - Reverse the descending ordered part, i.e. after a[k]
 
 
-
-
-
-
-
 ------------------------------------------------
        BST
 ------------------------------------------------
@@ -760,9 +771,14 @@ HINT: User BST Tree check approach
 -------------------------------------------------------------
 CONSTRUCTT MINIMAL HEIGHT BST TREE FROM A SORTED ARRAY
 -------------------------------------------------------------
-with start = 0; end  = vec.size(); 
-call buildTreeHelper(vector,start,end)
+TreeNode createMinBST(arr[],int start, int end){
+	int mid =start+end/2;
+	Treenode n = new (arr[mid]);
+	n.left = createMinBST(arr,start,mid-1);
+	n.right = createMinBST(arr,mid+1,end);
+	return n;
 
+}
 
 
 ================================================
