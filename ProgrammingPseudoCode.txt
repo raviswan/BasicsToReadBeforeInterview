@@ -59,15 +59,66 @@
 	- If target>e; ++row;
 	Do this while(row<m && col >=0)
 	
-============================================
-Sub-array sum
-============================================
-In most sub-array sums with successive elements , you'll have a running sum and a hashMap that stores sum in some fashion. 
-Key TAKEAWAY: At given index: sum - (sum-k) will result in target k
+	
+========================================================================================
+Longest Substring Problems (sliding window)
+========================================================================================
+ - General idea is to use hashMap<char,int> and compute sliding window of size as (i-startIndex+1). 
+ - Key is to figure out what to store in hashMap  and when to shrink/expand the window 
+ - Most of these problems are O(n).
+ 
+1.  Longest Substring Without Repeating Characters (lc: 3 and educative)
+-----------
+	The key aspects are:
+		- hMap[s[i]]=i; //storing the index where the char was last found
+		- When you hit a duplicate char, update startIndex = max(startIndex,hMap[s[i]]+1)
+		- maxLength=max(maxLength, i-startIndex+1);
 
-1: To determine max sum in array with  +ve & -ve, you have to determine local max at every index and global max across all indices. Return global max. (lc: 53)
+
+2. Longest Repeating Character Replacement (lc 424 and educative): Very tricky
+-------------
+
+We’ll iterate through the string to add one letter at a time in the window. We’ll also keep track of the count of the maximum repeating letter in any window (let’s call it maxRepeatLetterCount). So at any time, we know that we can have a window which has one letter repeating maxRepeatLetterCount times, this means we should try to replace the remaining letters. If we have more than ‘k’ remaining letters, we should shrink the window as we are not allowed to replace more than ‘k’ letters."
+     The keys are:
+     	- hMap[str[i]]++;
+        -  maxLetterLength=max(maxLetterLength, hMap[str[i]]);
+        - if(i-startIndex+1 - maxLetterLength > k){
+                hMap[str[startIndex]]--;
+                ++startIndex;
+            }
+	 - maxLength=max(maxLength, i-startIndex+1);
+
+
+3. Longest Substring with At Most K Distinct Character (lc 340)
+---------------
+    - Here, if the hashMap size > K for a given window, shrink the window until map size <= k. So, the key points are:
+      while(hMap.size() > k){
+	hMap[s[startIndex]]--;
+	if(hMap[s[startIndex]]==0)
+	    hMap.erase(s[startIndex]);
+	++startIndex;
+
+      }
+      maxLength=max(maxLength, i-startIndex+1);
+
+
+
+
+============================================
+Sub-array sums (with suc
+============================================
+ - General idea for sub-array sums with successive elements is to have runniung sum and use hashMap<int,int> that stores sum in some fashion.  
+ - Most of these problems are O(n).
+- Remember: At given index: sum - (sum-k) will result in target k
+
+
+1: Maximum Subarray (lc: 53)
+---------
+To determine max sum in array with  +ve & -ve, you have to determine local max at every index and use that to compute global max at every index. Return global max.
+
 
 2: Subarray Sum Equals K: To determine *NUMBER* of subarrays that sum to K (lc: 560)
+-----------
 	- KEY Understand that at given index: sum - (sum-k) will result in target k. So the goal is to know whether sum-k was 	     seen earlier and if so, how many times:
 		 if(hMap.count(sum-k)) 
 		 	ans+= hMap[sum-k];
@@ -76,6 +127,7 @@ Key TAKEAWAY: At given index: sum - (sum-k) will result in target k
 	
 	
 3: To check if the NON-negative array has a continuous subarray of size at least 2 that sums up to a multiple of k (lc: 523)
+--------------
  	Key: Remember remainder theorem: (A+(n * k)) % k = A%k.
   	a) hMap[0]=-1;  //to handle the case [0,0]
         b) runningSum %= k;  //when k!=0
@@ -86,7 +138,14 @@ Key TAKEAWAY: At given index: sum - (sum-k) will result in target k
             else //to handle [0,0]
                 hMap[runningSum]=i;
  
- 4. 3 sum or  4 sum problem where any a+b+c=target in a given array, it follows a different pattern as follows (lc: 15,16,18)
+ 
+ 4. Smallest Subarray Of Positive Integers with sum >= K (lc:209, educative):
+ ---------------
+ 	Here you dont need hash. Keep adding till sum >= K. then shrink sliding window until sum becomes < k. Move forward.
+	
+	
+	
+ 5. 3 sum or  4 sum problem where any a+b+c=target in a given array, it follows a different pattern as follows (lc: 15,16,18)
  	- sort the vector first
 	- Outer for-loop runs the lenght of vector.
 	- Last two nums will be taken from start and end of the vector converging inwards in a while loop
