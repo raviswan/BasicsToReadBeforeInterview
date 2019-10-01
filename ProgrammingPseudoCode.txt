@@ -66,6 +66,7 @@ Longest Substring Problems (sliding window)
  - General idea is to use hashMap<char,int> and compute sliding window of size as (i-startIndex+1). 
  - Key is to figure out what to store in hashMap  and when to shrink/expand the window 
  - Most of these problems are O(n).
+ - Be VERY, VERY CAREFUL about when to use inner while loop vs if loop
  
 1.  Longest Substring Without Repeating Characters (lc: 3 and educative)
 -----------
@@ -75,7 +76,7 @@ Longest Substring Problems (sliding window)
 		- maxLength=max(maxLength, i-startIndex+1);
 
 
-2. Longest Repeating Character Replacement (lc 424 and educative): Very tricky
+2. Longest Substring with Same Letters after at most k Replacement (lc 424 and educative): Very tricky
 -------------
 
 We’ll iterate through the string to add one letter at a time in the window. We’ll also keep track of the count of the maximum repeating letter in any window (let’s call it maxRepeatLetterCount). So at any time, we know that we can have a window which has one letter repeating maxRepeatLetterCount times, this means we should try to replace the remaining letters. If we have more than ‘k’ remaining letters, we should shrink the window as we are not allowed to replace more than ‘k’ letters."
@@ -105,7 +106,7 @@ We’ll iterate through the string to add one letter at a time in the window. We
 
 
 ============================================
-Sub-array sums (with suc
+SUB-ARRAY SUMS
 ============================================
  - General idea for sub-array sums with successive elements is to have runniung sum and use hashMap<int,int> that stores sum in some fashion.  
  - Most of these problems are O(n).
@@ -165,7 +166,7 @@ To determine max sum in array with  +ve & -ve, you have to determine local max a
  	
 	
 ================================================
-    STRING
+    STRINGS
 ================================================
 
 KEY TAKEAWAYS:
@@ -224,16 +225,23 @@ To know whether a substring contains target characters, we need two maps. Target
 - Run a forloop for endIndex.
 - If character is found in target, save that index in vector, call doesWordContainTarget(targetMap,wordSoFarMap).
 	If yes, call checkForTargetInWordSoFar() where the left pointer loops goes through values stored in vector.
-	
-	
-6. Find All Anagrams in a String (LC: 438)
+
+
+6a. Permutation in String (lc 567):
+---------
+- Here, we use two hashMaps and compare their counts for anagram match.
+- Take the first len1 letters in s2, store in s2 and check for anagram. If not, keep moving window to the right by 1 , check for match  until you hit end of s2.
+
+
+6b. Find All Anagrams in a String (LC: 438)
 ---------
 Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
 Input:
 s: "abab" p: "ab"
 
 -  We store the characters of the target string in hashMap. and also compute the targetSum but adding the integer values of all the characters in targetString
--  Its a valid anagram match when hashMap.count() returns TRUE for every character AND the computedSum=targetSum
+-  Its a valid anagram match when hashMap.count() returns TRUE for every character AND the computedSum=targetSum.
+- PLEASE REMEMBER: Use only one hashMap, not two. Use just the start position for checking anagram against pattern. Don't do windowing approach and move the window as in Problem 6a.
 -  Once you find anagram, start a loop and check to see if the character to be added next equals first index of the current anagram. If so, keep moving to the right until you find a non-match. 
 - Non-match could be of two kinds:
 	- The hashmap didn't contain the character at the next Index. In that case, move the loop Index to the next index.
