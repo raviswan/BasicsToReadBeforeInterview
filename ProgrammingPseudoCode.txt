@@ -771,6 +771,27 @@ D. Longest Path between any two nodes of binary Tree (aka Diameter of Binary Tre
 		ans = max(ans,leftHeight+rightHeight);
 		return 1+ max(leftHeight, rightHeight);
  
+ 
+E. LCA of Binary Tree (lc 236):
+-------
+- tricky yet simple recurison. Store recurse left, store recurse right. Consider the null/non-null output to encode the logic.
+- Think of A&B in different combinations with root - A being root;  A&B being root's children; Root has A on left, which has B on left; Root has B on right, which has A on left. These 4 scenarios should help you frame the logic.
+	lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+	if(!root)
+                return NULL;
+        if(root->val==p->val || root->val==q->val)
+            return root;
+        TreeNode* leftNode=lowestCommonAncestor(root->left, p,q);
+        TreeNode* rightNode=lowestCommonAncestor(root->right, p,q);
+        if(leftNode && rightNode)
+            return root;
+        else if(!leftNode && rightNode)
+            return rightNode;
+        else if(leftNode && !rightNode)
+            return leftNode;
+        else
+            return NULL;
+	 }
 
 
 ------------------------------------------------
