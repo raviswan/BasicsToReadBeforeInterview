@@ -716,26 +716,61 @@ Meeting Rooms (lc: 252,253) : You gotta return min number of rooms given a sched
           } else 
                 --cnt;
 
-------------------------------------------------
-MERGING TWO LISTS
-------------------------------------------------
-	-Create a shared pointer to new dummy_node, and have a 'tail' point to it.
-	-call MergeNode(&lowestValueNode,&tail) when both lists have non-NULL nodes .
-	Plese make sure you pass pointers to shared pointers.
-	- Make tail point to non-NULL node once you are out of MergeNode()
-	-return dummy_node->next;
 
+================================================
+     8. TREES
+================================================
 
+A.  Implement InOrder, Pre & Post-order traversal iteratively (lc:145)
+-------------
+	- Use stack and visited flag. The visited flag is implemented as hashMap<TreeNode*,bool>
+	- You pop the node off the stack, check if it is visited,then print. If not, mark it as visited. and the children in 		opposite order.
+	- Basically, you add a node stack unvisited, pop it, add it again as visited, and then pop it to print it.
+	- while(stack not empty){
+		if(hMap[node])
+			print
+		else {
+		    node->visited=true;
+		    now push nodes in reverse of the order asked
+		  }
+	   }
+		    
+B. Height Of Tree(i.e. Max Depth of Tree) (lc: 104): 
+------
+	if(!root) return 0;
+	int leftHeight=maxDepth(node->left);
+        int rightHeight=maxDepth(node->right);
+	return 1+max(leftHeight, rightHeight);
 	
+	
+C. Check Balanced Tree (lc: 110):
+------
+  - Uses getHeight() as helper function that returns just as above. 
+  - This helper also takes bool as reference. We return this bool eventually as final answer. So the final height output is of 		no consequence
+  - Compute leftHeight and rightHeight and if difference is > 1, mark bool to be false.
+  
+  - int getHeight(TreeNode* root,bool& ans){
+        if(!root) return 0;
+        int leftHeight= getHeight(root->left,ans);
+        int rightHeight = getHeight(root->right,ans);
+        if(!ans)
+            return -1;
+        if(abs(leftHeight-rightHeight)>1)
+            ans=false;
+        
+        return 1+ max(leftHeight,rightHeight);
+        
+    }
 
-------------------------------------------------
-DICTIONARY ORDERING
-------------------------------------------------
-- The  very last element of the dictionary order is all elements in descending order
 
-- So look for case when a[k]> a[k+1] and all after k are in descending order
-- pick the element from the descending order higher than a[k]. Swap it
-- Reverse the descending ordered part, i.e. after a[k]
+D. Longest Path between any two nodes of binary Tree (aka Diameter of Binary Tree) (lc: 543):
+-------
+ - Almost identical to balanced binary tree implementation except bool& is replaced with int&.
+  		int leftHeight=getHeight(root->left,ans);
+		int rightHeight= getHeight(root->right,ans);
+		ans = max(ans,leftHeight+rightHeight);
+		return 1+ max(leftHeight, rightHeight);
+ 
 
 
 ------------------------------------------------
@@ -859,3 +894,27 @@ Then you push base ring to the destination peg.
 Push n-1 rings back from the helper peg to the destination peg.
 
 Do this until n>0
+
+
+B. 
+------------------------------------------------
+MERGING TWO LISTS
+------------------------------------------------
+	-Create a shared pointer to new dummy_node, and have a 'tail' point to it.
+	-call MergeNode(&lowestValueNode,&tail) when both lists have non-NULL nodes .
+	Plese make sure you pass pointers to shared pointers.
+	- Make tail point to non-NULL node once you are out of MergeNode()
+	-return dummy_node->next;
+
+
+	
+
+------------------------------------------------
+DICTIONARY ORDERING
+------------------------------------------------
+- The  very last element of the dictionary order is all elements in descending order
+
+- So look for case when a[k]> a[k+1] and all after k are in descending order
+- pick the element from the descending order higher than a[k]. Swap it
+- Reverse the descending ordered part, i.e. after a[k]
+
