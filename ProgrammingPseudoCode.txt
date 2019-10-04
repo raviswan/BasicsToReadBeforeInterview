@@ -793,7 +793,27 @@ E. LCA of Binary Tree (lc 236):
             return NULL;
 	 }
 
+F. Construct binary tree from inorder and pre-order traversal (lc: 105):
+------------
+ - Loop one by one thru preorder vector. Look for this element in the inorder vector. Inorder index will be pivot.
+ - All elements to left of pivot will be in left of the current root. 
+ - All elements to right of pivot will be to right of current root.
+ - Here I dont check for idx out of bound as the if condition prior to it handles it.
+ 
+	TreeNode* treeHelper(vector<int>& preorder, vector<int>& inorder, int& idx, int start, int end){
+		if(start>end)
+			return NULL;
+		int elem=preorder[idx++];
+		int pivot=start;
+		while(inorder[pivot] != elem)
+			++pivot;
+		TreeNode* node = new TreeNode(elem);
+		node->left = treeHelper(preorder,inorder,idx,start,pivot-1);
+		node->right = treeHelper(preorder,inorder,idx,pivot+1,end);
+	    	return node;
+	}
 
+  }
 ------------------------------------------------
        BST
 ------------------------------------------------
