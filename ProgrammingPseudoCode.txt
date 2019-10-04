@@ -724,8 +724,8 @@ Meeting Rooms (lc: 252,253) : You gotta return min number of rooms given a sched
 A.  Implement InOrder, Pre & Post-order traversal iteratively (lc:145)
 -------------
 	- Use stack and visited flag. The visited flag is implemented as hashMap<TreeNode*,bool>
-	- You pop the node off the stack, check if it is visited,then print. If not, mark it as visited. and the children in 		opposite order.
-	- Basically, you add a node stack unvisited, pop it, add it again as visited, and then pop it to print it.
+	- You pop the node off the stack, check if it is visited,then print. If not, mark it as visited, add the children in 		opposite order.
+	- Basically, you add a node to stack unvisited, pop it, add it again as visited, and then pop it to print it.
 	- while(stack not empty){
 		if(hMap[node])
 			print
