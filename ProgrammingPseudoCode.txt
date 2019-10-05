@@ -886,16 +886,22 @@ C. DELETION of KEY IN BST (lc: 450)
  
 D. First occurence of a key in a BST 
 ---------------
-Use record and move on.
- 1) Handle < key  and  > key cases separately.
- 2) If there's a match store the parent value, and call left child when there's key match. 
+- Use record and move on.
+	while(root!=NULL)
+ 		- If root < key, move right, 
+		- if root > key , move left
+  		- If root==key, result=root, root=root->left;
 
 
-E. Inorder Successor in BST (lc: 285)
+E. Inorder Successor in BST (lc: 285)  (please remember: no need of a hashmap here)
 -------------------------------------------------------------
-- Use hashMap to store parent as you traverse to the node of interest (p).
-- If p has right node, find leftmost on right of p.
-- If not, walk up the parent until you hit root or another parent > p.
+- Check if p has right node, find leftmost on right of p.
+- If not, make current=root, parent=NULL.
+	while(current!= NULL)
+		- If current < target, just move right
+		- If current > target, save parent=current, move left.
+		- if current==target,break and return parent.
+
 
 -------------------------------------------------------------
 K LARGEST ELEMENTS IN BST:
