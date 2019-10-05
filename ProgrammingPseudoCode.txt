@@ -272,7 +272,7 @@ s: "abab" p: "ab"
 ================================================
 1) This search is done on sorted arrays. Remember the core algo uses only 1 while loop. no recursion. When you see sorted array, it should typically be binary search.
 
-2) To return first element in sorted array with duplicates, the only change is to modify the target<a[mid] check as follows:
+2 a. To return first element in sorted array with duplicates, the only change is to modify the target<a[mid] check as follows:
 	if(target < a[mid] || (target==a[mid] && mid > 0 && a[mid-1]==a[mid])
 		high=mid-1;
 	else if(target > a[mid])
@@ -280,6 +280,12 @@ s: "abab" p: "ab"
 	else
 	     	return mid
 		
+2 b.  Find First and Last Position of Element in Sorted Array(lc: 34)
+--------
+  - Use binary search to locate the element the first. mark both first and last index the same.
+  - use above technique for first position. For finding last position, add same logic in right side check
+
+
 3) To return element closest to a target element (Record and Move-on):
 	a) do usual binary search. But for every mid, track min of abs(a[mid]-target)
 
