@@ -814,36 +814,82 @@ F. Construct binary tree from inorder and pre-order traversal (lc: 105):
 	}
 
   }
+  
+G.  Invert Binary Tree (lc 226):
+ ----------
+  - The only thing to remember is that when you recurse and hit leaf node, return the leaf. 
+  
+  TreeNode* invertTreeHelper(TreeNode* root){
+        if(root->left==NULL && root->right==NULL)
+            return root;
+        TreeNode* leftSubtree = root->left ? treeHelper(root->left) : NULL;
+        TreeNode* rightSubtree = root->right? treeHelper(root->right):  NULL;
+        root->left = rightSubtree;
+        root->right = leftSubtree;
+       return root;
+    }
+    
+   
+    
 ------------------------------------------------
        BST
 ------------------------------------------------
+- At times Helpful to write a successor (leftmost on right) and predecessor function (rightmost on left)
+
+A. Checking if tree is BST (lc:98)
+------------
+	if(!root)
+            return true;
+        if(root->val <= minVal || root->val >= maxVal)
+            return false;
+        return (isValidBSTHelper(root->left, minVal, root->val) && isValidBSTHelper(root->right, root->val, maxVal));
+
+B. INSERITION of KEY IN BST:
+------------------
+parent=NULL; curr = root.
+keep moving left or right until curr = NULL.
+check whether node needs to be right or left of parent.
 
 
-------------------------------------------------
-Checking if tree is BST
-------------------------------------------------
-- Always check for nullptr first
-- Return false  if node->data is < LOWEST (OR)  > HIGHEST
-- return (checkBST(node->left,min,root->data) && checkBST(node->right,root->data,max) )
+C. DELETION of KEY IN BST (lc: 450)
+--------------
+-  No helper needed
+ - Remembert how to recursively traverse left of right until you the node to delete.
+ - Once you find the node to delete, 
+ 	- if it's leaf node, just delete(root).
+	- if it has left or right but not both, just  root=root->left (or root->right).
+	- if it has both left&right, find BST-successor,substitute its value, and recurse until you hit that successor value.
+ TreeNode* deleteNode(TreeNode* root, int key) {
+        if (!root) return NULL;
+        if (root->val > key) {
+            root->left = deleteNode(root->left, key);
+        } else if (root->val < key){
+            root->right = deleteNode(root->right, key);
+        } else {
+            if (!root->left || !root->right) {
+                root = (root->left) ? root->left : root->right;
+            } else {
+                TreeNode* rightMin = root->right;
+                while (rightMin->left) rightMin = rightMin->left;
+                root->val = rightMin->val;
+                root->right = deleteNode(root->right, rightMin->val);
+            }
+        }
+        return root;
+    }
+ 
+D. First occurence of a key in a BST 
+---------------
+Use record and move on.
+ 1) Handle < key  and  > key cases separately.
+ 2) If there's a match store the parent value, and call left child when there's key match. 
 
+
+E. Inorder Successor in BST (lc: 285)
 -------------------------------------------------------------
-First occurence of a key in a BST
--------------------------------------------------------------
-1) Always check for nullptr first
-2) If key matches, recurse left of the tree. 
-3) return searchBST(root->data < key ? root->right: root->left , key)
-
-1)In iterative, store the parent value, and call left child when there's key match. 
-2) Handle < key  and  > key cases separately.
-
--------------------------------------------------------------
-Next largest key in a BST 
--------------------------------------------------------------
-parent = nullptr; curr = root;
-Look from subtree perspective.
-If subtree value > key, save current as parent, and move current to left child
-If subtree value <= key, we don't care  so we keep moving to right.
-return parent's data when you exit the loop
+- Use hashMap to store parent as you traverse to the node of interest (p).
+- If p has right node, find leftmost on right of p.
+- If not, walk up the parent until you hit root or another parent > p.
 
 -------------------------------------------------------------
 K LARGEST ELEMENTS IN BST:
@@ -870,25 +916,7 @@ LOWEST COMMON ANCESTOR (LCA) of two unique elements IN BST
 	}
 	return tree;
 
--------------------------------------------------------------
-INSERITION of KEY IN BST:
--------------------------------------------------------------
-prev=nullptr; curr = root.
-keep moving left or right until curr = nullptr.
- check whether node needs to be right or left of parent.
 
--------------------------------------------------------------
-DELETION of KEY IN BST:
--------------------------------------------------------------
-1.prev=nullptr; curr = root;
-2. keep moving left or right until curr = nullptr or curr= key
-3 If curr = nullptr, return false.
-4. else, if curr has right node,  pick the leftmost of the right subtree, and replace 
-the value of curr with that of leftmost node. here logic:  rParent = curr; child = curr->right
-5. else, if curr has no right node: 
-	a) if curr is root, replace root with curr->left
-	b)  take curr->left and assign it to either right or left of parent.
- 
 -------------------------------------------------------------
 CONSTRUCT TREE FROM GIVEN PRE-TRAVERSAL SEQUENECE
 -------------------------------------------------------------
