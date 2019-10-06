@@ -752,7 +752,7 @@ B. Height Of Tree(i.e. Max Depth of Tree) (lc: 104):
 C. Check Balanced Tree (lc: 110):
 ------
   - Uses getHeight() as helper function that returns just as above. 
-  - This helper also takes bool as reference. We return this bool eventually as final answer. So the final height output is of 		no consequence
+  - This helper also takes bool as reference. We return this bool eventually as final answer. So the final height output is of 	no consequence
   - Compute leftHeight and rightHeight and if difference is > 1, mark bool to be false.
   
   - int getHeight(TreeNode* root,bool& ans){
@@ -903,6 +903,58 @@ E. Inorder Successor in BST (lc: 285)  (please remember: no need of a hashmap he
 		- if current==target,break and return parent.
 
 
+F . LCA of BST (lc:235)
+----------------
+  while(root){
+        if(p->val < root->val && q->val < root->val)
+            root=root->left;
+        else if(p->val > root->val && q->val > root->val)
+            root=root->right;
+        else {
+            ans=root;
+            break;
+        }
+    }
+
+
+G. Convert Sorted Array to BST (lc:108)
+------------------
+TreeNode* treeHelper( vector<int>& nums, int left, int right) {
+        if(left > right)
+             return NULL;
+        int mid = left + (right-left)/2;
+        TreeNode* node = NULL;
+       if (left<=right){
+            node = new TreeNode(nums[mid]);
+            node->left = treeHelper(nums,left,mid-1);
+            node->right = treeHelper(nums,mid+1,right);
+        }
+        return node;  
+}
+
+
+H. Convert sorted list to BST (lc: 109)
+----------
+- Logic similar to sorted list.  Just observer the terminating condition.
+
+    TreeNode* recurseTree(ListNode* head, ListNode* endNode) {
+        if(head==endNode)
+            return NULL;
+        ListNode* slow=head;
+        ListNode* fast=head;
+        while(fast!=endNode){
+            fast=fast->next;
+            if(fast!=endNode){
+                fast=fast->next;
+                slow=slow->next;
+            }
+        }
+        TreeNode* node = new TreeNode(slow->val);
+        node->left = recurseTree(head,slow);
+        node->right = recurseTree(slow->next,endNode);
+        return node;
+    }
+
 -------------------------------------------------------------
 K LARGEST ELEMENTS IN BST:
 -------------------------------------------------------------
@@ -912,21 +964,6 @@ Check tree for null and recurse all the way to the right.
 Check vector size before pushing tree->data and recurse left by calling tree->left.
 Remember to check the size of vector before making a call to right, and left
 
--------------------------------------------------------------
-LOWEST COMMON ANCESTOR (LCA) of two unique elements IN BST
--------------------------------------------------------------
-- Consider s to be smaller of the two, b to be larger of the two
-- Three while loops
--  when root is not between a&b, traverse left or right depending on
- if it <s or > b.
- In other words,
-- 	while (tree->data < s  || tree->data > b){
-		while(tree->data < s)
-			tree = tree->right.get();
-		while(tree->data > b)
-			tree = tree->left.get();
-	}
-	return tree;
 
 
 -------------------------------------------------------------
@@ -948,20 +985,9 @@ HINT: User BST Tree check approach
 											builTreeHelper(vec,lower_bound,vec[index],index
 											builTreeHelper(vec,vec[index],upper_bound,index)
 										 } 
-							  )
+							  
 
 
--------------------------------------------------------------
-CONSTRUCTT MINIMAL HEIGHT BST TREE FROM A SORTED ARRAY
--------------------------------------------------------------
-TreeNode createMinBST(arr[],int start, int end){
-	int mid =start+end/2;
-	Treenode n = new (arr[mid]);
-	n.left = createMinBST(arr,start,mid-1);
-	n.right = createMinBST(arr,mid+1,end);
-	return n;
-
-}
 
 
 ================================================
