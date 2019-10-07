@@ -955,6 +955,8 @@ H. Convert sorted list to BST (lc: 109)
         return node;
     }
 
+
+
 -------------------------------------------------------------
 K LARGEST ELEMENTS IN BST:
 -------------------------------------------------------------
@@ -965,28 +967,36 @@ Check vector size before pushing tree->data and recurse left by calling tree->le
 Remember to check the size of vector before making a call to right, and left
 
 
+================================================
+	TRIE   aka prefix tree (lc: 208)
+================================================
+												  
+-  Used for auto-complete, and string storage for games like boggle where you choose a valid path based on trie traversal.
+- Think of storing words starting with same letter such as dog,dig,dot,dote,deck. You store d at first level; e,i,o at 2nd level etc.
+- For implementation, think of tree implementation where each child node is a Tree. Likewise, each node at a given level is Trie accessed using hashmap[char] stored at its parent level. 
+- Remember to start with Trie* node = this, and keep re-assigning values to node
 
--------------------------------------------------------------
-CONSTRUCT TREE FROM GIVEN PRE-TRAVERSAL SEQUENECE
--------------------------------------------------------------
-HINT: User BST Tree check approach
-1.Please note given an in-order traversal, you can get a unique tree structure. Take,{1,2,3}
-2. For pre-order traversal, there's a unique sequence.
-3. Follow the approach of BST check by using min and max bounds for every recursive call.
-	buildTree(){
-		index = 0;
-		return buildTreeHelper(vec,lower_bound,upper_bound,&index)
-	}
-4. Key here is to pass the address of index to helper function so that index is updated after every recursive call.
-5. Check  *index = vec.size , return nullptr
-6. Check vector value <lower_bound || >upperbound, return nullptr;
-7. Increment index.
-8. return unique_ptr<BSTNOde>(new BSTNode{vector value,
-											builTreeHelper(vec,lower_bound,vec[index],index
-											builTreeHelper(vec,vec[index],upper_bound,index)
-										 } 
-							  
-
+class Trie{
+	Trie(){
+        	neighbors={};isWord=false;
+    	}
+	
+	void insert(string word) {
+        	Trie* node = this;
+        	for(auto& c: word){
+            		if(!node->neighbors.count(c))
+                		node->neighbors[c]=new Trie();
+            		node = node->neighbors[c];
+        	}
+        	node->isWord = true;
+   	 }
+	 
+	bool search(string word) {}
+	bool startsWith(string prefix) {}
+ private:
+        unordered_map<char,Trie*> neighbors;
+        bool isWord;
+}
 
 
 
