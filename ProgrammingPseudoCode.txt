@@ -835,7 +835,26 @@ G.  Invert Binary Tree (lc 226):
        return root;
     }
     
-   
+ H. Level Order Traversal (lc:102)
+ ---------
+ - There's standard BFS outer-while loop. Then there's inner for-loop for queue size.
+ 
+  void bfs(vector<vector<int>>& ans, queue<TreeNode*>& q){
+        while(!q.empty()){
+            int sz = q.size();
+            vector<int> v;
+            for(int i=0;i<sz;++i) {
+                TreeNode* elem=q.front();
+		q.pop();
+                v.push_back(elem->val);
+                if(elem->left) 
+                    q.push(elem->left);
+                 if(elem->right) 
+                    q.push(elem->right);    
+            }
+            ans.push_back(v);
+        }
+    }
     
 ------------------------------------------------
        BST
@@ -968,7 +987,7 @@ Remember to check the size of vector before making a call to right, and left
 
 
 ================================================
-	TRIE   aka prefix tree (lc: 208)
+	TRIE  (lc: 208)
 ================================================
 												  
 -  Used for auto-complete, and string storage for games like boggle where you choose a valid path based on trie traversal.
@@ -997,6 +1016,61 @@ class Trie{
         unordered_map<char,Trie*> neighbors;
         bool isWord;
 }
+
+================================================
+	GRAPHS
+================================================
+ - Uses adjancency list or adjacency matrix
+ - Time: O(V+E) .  Space: O(V)
+ - Keep track of State={VISITED, UNVISITED,VISITING} only when necessary
+ 
+ A. DFS:  
+ ------
+ dfs(Node* node){
+	processNode;
+	for(auto& n: node->neighbors){
+		if(n->state==UNVISITED) 
+			dfs(n);	
+	}
+	node->state=VISITED;
+  }
+
+
+B. BFS:
+------
+ - Needs a queue. When you get inside the bfs function, start with while loop for queue
+ 
+q.push(node);
+bfs(Node* node, queue<Node*> q){
+	while(!q.empty()){
+		Node* node = q.front();
+		q.pop();
+		processNode;
+		for(auto& n: node->neigbors){
+			if(n.state==UNVISITED)
+				q.push(n);	
+		}
+		node->state=VISITED;
+	}
+ }
+
+C. Cloning a graph (lc: 133):
+--------
+- Use DFS. No state variable needed
+- You only need a hasMap<OriginaNode*,ClonedNode*> to know whether a given neighbor has been already cloned or not.
+
+    unordered_map<Node*,Node*> origToCloneMap;
+    Node* dfs(Node* node){
+        Node* clonedNode = new Node(node->val,{});
+        origToCloneMap[node]=clonedNode;
+        for(auto& n: node->neighbors){
+            if(!origToCloneMap.count(n) )
+                clonedNode->neighbors.push_back(dfs(n));
+            else
+                clonedNode->neighbors.push_back(origToCloneMap[n]);
+        }
+        return clonedNode;
+    }
 
 
 
