@@ -856,9 +856,9 @@ G.  Invert Binary Tree (lc 226):
         }
     }
     
-------------------------------------------------
-       BST
-------------------------------------------------
+================================================
+      9.  BST
+================================================
 - At times Helpful to write a successor (leftmost on right) and predecessor function (rightmost on left)
 
 A. Checking if tree is BST (lc:98)
@@ -987,7 +987,7 @@ Remember to check the size of vector before making a call to right, and left
 
 
 ================================================
-	TRIE  (lc: 208)
+	10. TRIE  (lc: 208)
 ================================================
 												  
 -  Used for auto-complete, and string storage for games like boggle where you choose a valid path based on trie traversal.
@@ -1018,7 +1018,7 @@ class Trie{
 }
 
 ================================================
-	GRAPHS
+	11. GRAPHS
 ================================================
  - Uses adjancency list or adjacency matrix
  - Time: O(V+E) .  Space: O(V)
@@ -1071,6 +1071,25 @@ C. Cloning a graph (lc: 133):
         }
         return clonedNode;
     }
+
+
+D. Word ladder (lc: 127)
+------
+Input:
+beginWord = "hit",
+endWord = "cog",
+wordList = ["hot","dot","dog","lot","log","cog"]
+Output: 5
+Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" -> "cog"
+
+- use BFS. It will have outer while-loop for queue and inner for-loop for queue size.
+- Convert wordList to hashSet. When you pop the word from queue, delete it from hashSet.
+- From hashset, every 1 char different neighbor, add it to queue. Increment length.
+
+E. WordLadder-II (lc: 126)
+  - Everything just as WordLadder-1 except:
+  	- when you hit the endword, you set endFlag=true. And you store the results in unordered_multimap.
+  	- At the end of current queue, you check for endFlag=true and call reTracePath recursively going backward from endWord until you hit begin word.
 
 
 
