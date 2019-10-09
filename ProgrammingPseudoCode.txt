@@ -611,47 +611,6 @@ until you find element >= current element.
 Time complexity: O(V+E) 
 Space Complexity: O(V)
 
-1. DFS
------
-void dfs(Node* node){
-	node->state=VISITING;
-	processNode();
-	for(auto& n: node->neighbors){
-		if(n->state==UNVISITED)
-			dfs(n);
-	}
-	node->state=VISITED;
-}
-
-2. BFS 
------
-- Always has a queue. 
-- Core logic starts with while (queue has elements). Before that add that first element to queue and set the state.
-- Also when you add neighbors, you update the state before putting it in the queue.
-
-root->state=VISITING;
-queue<int> q;
-q.push(root);
-void bfs(queue<int>& q){
-	while(!q.empty()){
-	    Node* node = q.top(); q.pop();
-	    processNode();
-	    for(auto& n: node->neighbors){
-	    	if(n->state==UNVISITED){
-			n->state=VISITING;
-			q.push(n);
-		}
-	     }
-	     node->state=VISITED;
-	}
-}
-
-
-3. Clone Graph
-------------
-- Do a DFS but without any state variables. 
-- dfs() returns a new node every time it's called.
--  You need an unordered_map<Node*,Node*> origToCloneMap;
 
 
 4. Word-Ladder (lc:127) (lc:126)
@@ -1089,13 +1048,22 @@ Explanation: As one shortest transformation is "hit" -> "hot" -> "dot" -> "dog" 
 - From hashset, every 1 char different neighbor, add it to queue. Increment length.
 
 E. WordLadder-II (lc: 126)
+----------
   - Everything just as WordLadder-1 except:
   	- when you hit the endword, you set endFlag=true. And you store the results in unordered_multimap.
   	- At the end of current queue, you check for endFlag=true and call reTracePath recursively going backward from endWord until you hit begin word.
 
-F. Course Schedule I and II:
--------
-It's topological sort. Remember the order of nodes is important. Prereq node has dependent as its neighbor
+
+F. Course Schedule aka Toploogical Sort (lc 207,lc 210)
+------
+- Toplogical sort is  DFS + 1 extra line  at the end, which is stack.push(node) . Then pop out stock to get the right order.
+- Topological sort only works when there are no cycles. Therefore it works only for directed graphs.
+- Remember the order of nodes is important. Prereq node will make have dependent as its neighbor
+- To solve Course Schedule :
+	- unordered_map<int,State>:  to store states for each node
+	- a vector of vertices - one per node. This is populated at the same time states are initialized for each node
+	- VERY IMPORTANT: ensure the false is percolated all the way up for recursive DFS calls.
+
 
 
 ================================================
