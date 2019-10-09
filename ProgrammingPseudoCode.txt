@@ -1020,9 +1020,11 @@ class Trie{
 ================================================
 	11. GRAPHS
 ================================================
- - Uses adjancency list or adjacency matrix
- - Time: O(V+E) .  Space: O(V)
+- Can be represented as edge list, adjacency list,adjacency matrix
+	https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs
+ - Time: O(V+E) .  Space: O(V)  for most graph problems
  - Keep track of State={VISITED, UNVISITED,VISITING} only when necessary
+ - Topological sort is DFS + stack push  at the end.
  
  A. DFS:  
  ------
@@ -1091,6 +1093,27 @@ E. WordLadder-II (lc: 126)
   	- when you hit the endword, you set endFlag=true. And you store the results in unordered_multimap.
   	- At the end of current queue, you check for endFlag=true and call reTracePath recursively going backward from endWord until you hit begin word.
 
+F. Course Schedule I and II:
+-------
+It's topological sort. Remember the order of nodes is important. Prereq node has dependent as its neighbor
+
+
+================================================
+	HEAP
+================================================
+
+- Heap is a Complete Binary Tree (elements at last level will aligned to the left) with parent < two children (for min heap)
+- Min heap has lowest element at top  where every parent is less than its 2 children.
+- Heap elements are stored in array in level order traversal.
+- For element at array index i: 
+	- Left child would be at 2*i + 1
+	- Right child would be at 2*i + 2
+	- Parent will be (i-1)/2
+- To insert a new element
+	- insert at the very bottom, keep swapping with parent until its value < parent (for a max heap)
+- To delete max element
+	- remove the max and move last element into the top position. 
+	- Now take max(parent,left,right). If parent is not max, swap parent and max element. Repeat this for new max index
 
 
 ================================================
