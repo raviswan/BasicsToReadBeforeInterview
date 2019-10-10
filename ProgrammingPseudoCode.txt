@@ -987,11 +987,19 @@ class Trie{
  
  A. DFS:  
  ------
+ 
  dfs(Node* node){
 	processNode;
+	node->state=VISITING;
 	for(auto& n: node->neighbors){
+		if(n->state==VISITING)
+			set ans=false;return; //this is a cycle.
+		if(n->state==VISITED)
+			continue;
 		if(n->state==UNVISITED) 
 			dfs(n);	
+		if(ans==false)
+			return;
 	}
 	node->state=VISITED;
   }
@@ -1007,7 +1015,12 @@ bfs(Node* node, queue<Node*> q){
 		Node* node = q.front();
 		q.pop();
 		processNode;
+		node->state=VISITING;
 		for(auto& n: node->neigbors){
+			if(n->state==VISITING)
+				set ans=false;return; //this is a cycle.
+			if(n->state==VISITED)
+				continue;
 			if(n.state==UNVISITED)
 				q.push(n);	
 		}
@@ -1054,16 +1067,37 @@ E. WordLadder-II (lc: 126)
   	- At the end of current queue, you check for endFlag=true and call reTracePath recursively going backward from endWord until you hit begin word.
 
 
+================================================
+	TOPOLOGICAL SORT
+================================================
+
 F. Course Schedule aka Toploogical Sort (lc 207,lc 210)
 ------
 - Toplogical sort is  DFS + 1 extra line  at the end, which is stack.push(node) . Then pop out stock to get the right order.
 - Topological sort only works when there are no cycles. Therefore it works only for directed graphs.
-- Remember the order of nodes is important. Prereq node will make have dependent as its neighbor
+- IMPORTANT: Remember the order of nodes is important. Prereq node will make have dependent as its neighbor
 - To solve Course Schedule :
 	- unordered_map<int,State>:  to store states for each node
 	- a vector of vertices - one per node. This is populated at the same time states are initialized for each node
-	- VERY IMPORTANT: ensure the false is percolated all the way up for recursive DFS calls.
+	- Ensure the false is percolated all the way up for recursive DFS calls.
 
+
+G. Alien Dictionary (lc: 269)
+-------
+Input:
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+
+Output: "wertf"
+
+- mark all characters of all words as  unvisited in "State hash map".
+- You take words in pairs and find the first character tin both that differ. Make the second word's character the neighbor of first word's character. Repeat this for every input pair. This happens in "neighbor hashmap".
+- Then run through all the elements in the state hash Map. If the element is unvisited, run dfs on it watching for cycles.
 
 
 ================================================
