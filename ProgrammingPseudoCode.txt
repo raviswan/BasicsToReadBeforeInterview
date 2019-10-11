@@ -1067,11 +1067,20 @@ E. WordLadder-II (lc: 126)
   	- At the end of current queue, you check for endFlag=true and call reTracePath recursively going backward from endWord until you hit begin word.
 
 
+F. Longest Increasing Path in a Matrix (lc: 329)
+-------
+- This can be solved using DFS. This DFS returns integer but only at the very end.
+- We use 3 hashMaps:  1) state, 2) storing neigbors, 3) results
+- Please remember to store the result for already calculated index in hashMap.
+-Use localMax to store the max value  for each index
+- Every element has unique index in the hashMap calculated using  ( i* NUMCOLS+ j).
+
+
 ================================================
 	TOPOLOGICAL SORT
 ================================================
 
-F. Course Schedule aka Toploogical Sort (lc 207,lc 210)
+A. Course Schedule aka Toploogical Sort (lc 207,lc 210)
 ------
 - Toplogical sort is  DFS + 1 extra line  at the end, which is stack.push(node) . Then pop out stock to get the right order.
 - Topological sort only works when there are no cycles. Therefore it works only for directed graphs.
