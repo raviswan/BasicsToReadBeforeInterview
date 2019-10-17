@@ -48,7 +48,13 @@
 		n -= 2
 		startRow +=1
 		startCol +=1
-	- 4 for-loops for every (m,n) pair.
+	- One outer while-loop while(m>=1 && n >=1) and 4  inner for-loops for every (m,n) pair. 
+	- Terminating condition of all 4 for-loops:
+		j<startCol+n; 
+		i<startRow+m; 
+		i!=startRow && j>=startCol
+		i>startRow && (startCol+n-2 >= startCol)
+		
 	- IMPORTANT:  In the 3rd and 4th for-loops, do extra checks in for-loop initialization itself to make sure we are not 		traversing the same row, col. This is to handle 1 row,1 col case.
 	
 	
@@ -293,8 +299,16 @@ s: "abab" p: "ab"
 	a) Two key observations: If array is rotated, last element < firstElem. 
 		- minimum element is <= lastElem  and 
 		- element to left of miniumElement is greater.
-	b) last element will "act" as target. If a[mid] > lastElem , move to right. If a[mid]< lastElem, move to left.
-	c) If a[mid]<=lastElem  && (mid!=0 && a[mid-1]>a[mid]) return mid
+	b) key Logic:
+	   if (nums[mid] > lastValue) {
+                start = mid+1;
+            }
+            else if(nums[mid] <= lastValue) {
+                if (mid==0 || (nums[mid-1] > nums[mid]))
+                    return nums[mid];
+                else
+                    end = mid -1;
+            }
 	
 5) To determine , square root, run binary search with low=1 and high=x. And only one change to algo:
 	- if (mid*mid < x) { low=mid+1;ans=mid; }
@@ -308,13 +322,16 @@ s: "abab" p: "ab"
 7) Median of two sorted arrays (lc:4)
 	- helper function to handle empty arrays
 	- helper function to handle when one array's greatest < other array's smallest
-	- here consider 4 comparative cases for : (medianIndex+1) vs len1
-	- fnd the smaller of the (midIndex1,midIndex2). Lets call it target.  
-	   In the other array, compute index  whose value <= target using binary search using record and move-on. We call this 
+		- here consider 4 comparative cases for : (medianIndex+1) < or ==len1 or ==len1+1 or everything else
+	- find the smaller of the (midIndex1,midIndex2). Lets call it target.  
+	  In the other array, compute index  whose value <= target using binary search using record and move-on. We call this 
 	       newIndex =findIndexLessThanMidValue().
 	- Now compute numIndicesToAccountFor. 
 	*  If it is zero, you handle is separately 
 	*  If it is non-zero,move to right of numIndex1 (& in nums2) storing prev and curr until numIndicesToAccountFor=0
+	
+
+	
 		
 ================================================
       PERMUTATION/COMBINATIONS
@@ -418,7 +435,22 @@ Important aspect: 2 recursive call for every index and hashSet indicating whethe
 -  Recurse to include next index to form larger word .
         helper(s,hSet,str,index,len+1,ans,wordFoundPos,wordVec); 
 - Code here: https://leetcode.com/submissions/detail/253027047/ 
-	
+
+4) Pow(x, n)  (lc:50):
+=========
+    double myPow(double x, int n) {
+        if (n==0) return 1;
+        double t = myPow(x,n/2);
+        if (n%2) {
+            return n<0 ? 1/x*t*t : x*t*t;
+        } else {
+            return t*t;
+        }
+    }
+    
+    
+    
+    
 ================================================
      3 .  LINKED LISTS
 ================================================
