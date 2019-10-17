@@ -369,11 +369,35 @@ The code structure for these problems are generally like this:
 		}
 		
 - In coinSum, to print all combinations, it's just the same as combinationSum where 
+----------
 	 for coins loop {
 	     vector.push_back(coins[i])
 	     recursive call (with same forLoopIndex,sum+coins[i])
 	     vector.pop_back()
 	 }
+
+- Fewest coins to make up that change ( lc:322):
+-------------
+	  Equation: 
+	  	ans[i] = 1 + ans[i-c]; //first pass
+		min(ans[i], 1 + ans[i-c];). //subsequent passes
+	- vector<int> ans(amount+1,-1);
+	- Initialize ans[0]=0;
+	- Outer loop is always coins.
+	- Inner loop runs from coin to amount inclusive
+	- Create a vector of upto length "amount"+1.
+		
+- Total number of ways to make the change (lc: 518):
+----------
+	Equation:
+	ans[k] = ans[k] + ans[k-c];
+
+	- Initialize ans[0]=1; // Answer vector is from 0 upto the amount. It indicates how many ways for each of index
+	- Outer loop is always coins.
+	- Inner lopp runs from coin to amount inclusive
+	- Create a vector of upto length "amount"+1.
+	- In the inner loop, runnig throuygh ansqer vector from 1 to k. you compute ans[k] for first coin, then goto second  
+	   coin and add cumulative sum and so on.
 
 - Refer to powerSetsCombinationPermutationsCoinSum.cpp for actual code
 - Time complexity: Exponential. How? https://stackoverflow.com/questions/13467674/determining-complexity-for-recursive-functions-big-o-notation
@@ -436,7 +460,7 @@ Important aspect: 2 recursive call for every index and hashSet indicating whethe
         helper(s,hSet,str,index,len+1,ans,wordFoundPos,wordVec); 
 - Code here: https://leetcode.com/submissions/detail/253027047/ 
 
-4) Pow(x, n)  (lc:50):
+4) Pow(x, n)  (lc:50): Plain recursion:
 =========
     double myPow(double x, int n) {
         if (n==0) return 1;
