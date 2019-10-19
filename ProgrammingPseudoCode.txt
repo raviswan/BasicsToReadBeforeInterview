@@ -427,7 +427,7 @@ RECURSION/BACKTRACKING
 
 	Other easy solution: https://leetcode.com/problems/unique-paths-ii/discuss/23248/My-C%2B%2B-Dp-solution-very-simple!
 
-2) N-Queens Puzzle
+2) N-Queens Puzzle (lc: 51)
 =======
 Important Aspect: 
 	code  structure is just like combinatorial recursion problem : 
@@ -437,8 +437,27 @@ Important Aspect:
 - For each row, we loop thru all columns placing Queen after column, left diagonal & right diagonal conditions are met. 
 - The line after recurse will reset the position of Q  so that we could find new positions.
 
+	bool isValidPos(vector<string>& ans, int i, int j,int n) {
+		if(!isQueenInColumn(j,ans)&&  !isQueenInLeftDiagonal(i,j,n,ans) && !isQueenInRightDiagonal(i,j,n,ans)){
+			ans[i][j]='Q';
+			return true;
+		}
+		return false;
+	}
+	
+	void helper(int n, vector<string>& ans, int rowIndex,vector<vector<string>>& vv) {
+	  <insert Termination condition here>
+         for(int j=0;j<n;++j){
+            if(isValidPos(ans,rowIndex,j,n)) {
+                ans[rowIndex][j]='Q';
+                helper(n,ans,rowIndex+1,vv);
+                ans[rowIndex][j]='.';
+            }
+         }
+    }
 
- 3) Word Break Problem:
+
+ 3) Word Break Problem (lc:139)
  ========
  Input = "ilikemangotango"
 Output: 
@@ -447,7 +466,11 @@ Output:
 "i like mango tan go" 
 "i like man go tango"
 
-Important aspect: 2 recursive call for every index and hashSet indicating whether a word was at the index.
+Important aspect: Refer to the video link
+https://www.youtube.com/watch?v=hLQYQ4zj0qg
+
+
+2 recursive call for every index and hashSet indicating whether a word was at the index.
 
 - Grab substr at every index:
 - You need a hashSet<int> to keep track of whether a word was found at that index i. This is to pop the word and continue forming next bigger word
@@ -479,6 +502,7 @@ Important aspect: 2 recursive call for every index and hashSet indicating whethe
      3 .  LINKED LISTS
 ================================================
 
+Start with 3 node link list for fast-slow pointers.
 A. Append Function : 
 ------------------------------------------------
 Write append function of List class that can be re-used. You need to know tail to write this fuction. 
@@ -516,14 +540,23 @@ D. Where Cycle starts in a List
 Detect a cycle, then find the length of the cycle L. Once you know the length of the cycle, reset fast and slow back to head of the list. Then,  move fast node forward by L nodes. Now, advance both pointers by 1 until they meet. The node at which they meet will be the start of the cycle.
 
 
-E. Reversing a list
+E. Reversing a list (lc: 206)
 ------------------------------------------------
 	-Use prev = NULL, curr = root ; one_ahead=curr->next; Compute one_ahead
 	- Compute logic using a  middle node with node on either side. And extend it for first node
 	- return prev.
 	- If you have to reverse using recursion, use a helper like this:
-		recurseReverseList(ListNode* currNode, ListNode* prevNode, ListNode** rootNode)
-	  Don't forge to initalize rootNode = &head;
+		 void recurseReverseList(ListNode* currNode, ListNode* prevNode, ListNode** rootNode){
+			if(currNode==NULL){
+			   *rootNode = prevNode;
+			   return;
+			}
+        		recurseReverseList(currNode->next, currNode, rootNode);
+       		 	currNode->next= prevNode;
+   		 }
+		 
+	  Don't forge to initalize rootNode = &head and call
+	   	recurseReverseList(head, NULL, rootNode);
 	  
 	  
 F. Merge Sorted Lists
@@ -535,9 +568,9 @@ F. Merge Sorted Lists
 I. Merge k sorted lists (lc 23)
 -------
 - Find minimum value first. Store that as root node. 
-- Use a hashset to store all the nodes, grab the minumum node, add it to final list,  and then erase the min node and add minNode->next
+- Use a hashset to store all the head nodes, grab the minumum node, add it to final list,  and then erase the min node and add minNode->next
 - while(hashSet not empty){
-	walk through hash set and grab the minimum node from the hashSet and add to final list
+	walk through hash set and grab the minimum head node from the hashSet and add to final list
    }
    
    
@@ -594,13 +627,13 @@ checkDup(Node* root){
      4 .  STACK
 ================================================
 
-A. Postfix Expression
+A. Postfix Expression (lc:150)
 ======
  - Need only one stack<string> for operands. when you encounter operator, you pop two from stack and process it.
  - Use stoi() for computation with operator and to_string() to put it back in stack
  
  
-B. Infix expression aka Basic Calculator (with or without paranthesis)
+B. Infix expression aka Basic Calculator (with or without paranthesis) (lc:224, lc:227)
 =============
 - KEY TAKEAWAYS: 2 stacks, assigning priority to operators, handling all operators in stack >= current operator priotity, and processing all operatots until you hit '(' when you encounter ')'
 
@@ -628,7 +661,7 @@ Refer to my leetcode solution. You call storeOperand() before virtually every ch
      5 .  QUEUE
 ================================================
 
-A. Ring Buffer or Circular Queue
+A. Ring Buffer or Circular Queue (lc:622)
 ========
 - KEY TAKEAWAY:  back = (back+1)%k;front=(front+1)%k; have a length variable to keep track of elements queued/enqueued
 - Implemented as array of fixed size where you insert in the back and dequeue from front.
