@@ -394,6 +394,7 @@ DYNAMIC PROGRAMMING
 	- Inner loop runs from coin to amount inclusive
 	- Create a vector of upto length "amount"+1.
 		
+		
 2) Total number of ways to make the change (lc: 518):
 ----------
 	Equation:
@@ -406,11 +407,23 @@ DYNAMIC PROGRAMMING
 	- In the inner loop, runnig throuygh ansqer vector from 1 to k. you compute ans[k] for first coin, then goto second  
 	   coin and add cumulative sum and so on.
 
+
 3)  01 Matrix: Given a matrix consists of 0 and 1, find the distance of the nearest 0 for each cell. The distance between two adjacent cells is 1 (lc:542)
 -----------
 You make a first pass top-to-bottom, left-to-right : finding min against left and top neighbor(remember that [0][0] cant be computed)
+  if(i>0)
+	ans[i][j]=min(ans[i][j],1+ans[i-1][j]);
+  if(j>0)
+	ans[i][j]=min(ans[i][j],1+ans[i][j-1]);
 
 You make a second pass bottom-to-top, right-to-left : finding min against right and bottom neighbor(remember that  [m-1][n-1] cant be computed)
+if(i<m-1)
+  ans[i][j]=min(ans[i][j],1+ans[i+1][j]);
+if(j<n-1)
+  ans[i][j]=min(ans[i][j],1+ans[i][j+1]);
+  
+  
+  
 
 ================================================
 RECURSION/BACKTRACKING
