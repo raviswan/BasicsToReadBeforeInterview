@@ -646,6 +646,16 @@ checkDup(Node* root){
 	}
 }
 
+---------------
+J. Flatten a Multilevel Doubly Linked List (lc: 430):
+---------------
+https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
+
+- Just one recursive call.
+- IMPORTANT: Pass endNode pointer by reference to return the last node at child level. 
+- Don't forget to reset the child pointer to NULL, after flattening it. 
+https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/discuss/459491/0-ms-easy-to-follow-solution-in-C%2B%2B
+
 ================================================
      4 .  STACK
 ================================================
@@ -927,6 +937,31 @@ G.  Invert Binary Tree (lc 226):
         }
     }
     
+ ----------------
+  I. Binary Tree Coloring Game (lc:1145)
+  ----------------
+  https://leetcode.com/problems/binary-tree-coloring-game/
+ Ans:
+ - For given node x, count number of nodes to its left (lans), number of nodes to its right(rans). If any one of them is > 50 % of n , return  true.
+- Otherwise, goto parent of x. If x is to the left, compute (n-lans) . Else compute (n-rans)
+- if (n-lans > lans) OR  (n-rans > rans), return true;
+- Otherwise false.
+
+
+----------------
+J. Delete nodes and return forest (lc: 1110)
+ ----------------
+https://leetcode.com/problems/delete-nodes-and-return-forest/
+
+- Recursion problem. Study the problem by traversing to the last node. Use toDeleteSelf and toDeleteChild flags
+- If node is to be deleted, return true.
+- At the parent, you have two combinations to consider:
+	 a) if(!toDeleteSelf  AND toDeleteChild)
+		node->child = NULL
+	 b) if(toDeleteSelf  AND !toDeleteChild)
+		add child to output.
+		
+		
 ================================================
       9.  BST
 ================================================
