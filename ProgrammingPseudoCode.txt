@@ -736,7 +736,7 @@ Space Complexity: O(V)
 
 
 
-4. Word-Ladder (lc:127) (lc:126)
+A. Word-Ladder (lc:127) (lc:126)
 ------
 beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
 Output: 5
@@ -750,7 +750,7 @@ Output: 5
 
 
 
-5. Course Schedule aka Toploogical Sort (lc 207,lc 210)
+B. Course Schedule aka Toploogical Sort (lc 207,lc 210)
 ------
 - Toplogical sort is  DFS + 1 extra line  at the end, which is stack.push(node) . Then pop out stock to get the right order.
 - Topological sort only works when there are no cycles. Therefore it works only for directed graphs.
@@ -760,6 +760,15 @@ Output: 5
 	- unordered_multimap<int,int>: to store neighbors
 	- VERY IMPORTANT: ensure the false is percolated all the way up for recursive DFS calls.
 
+
+C. Network Delay Time (lc: 743)
+----------
+https://leetcode.com/problems/network-delay-time/
+Key are:
+- Djikstra's shortest path algorithm (https://www.youtube.com/watch?v=pVfj6mxhdMw)
+- Use of priority queue.
+
+When you use Djikstra's algorithm, you gotta always pick the next node with least cost. To do this we need to have priority queue. Understand how priority queue is used with pairs .
 
 
 ================================================
