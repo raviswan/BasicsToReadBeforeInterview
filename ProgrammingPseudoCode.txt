@@ -109,6 +109,10 @@ We’ll iterate through the string to add one letter at a time in the window. We
       maxLength=max(maxLength, i-startIndex+1);
 
 
+4. Longest String Chain (lc: 1048)
+--------
+https://leetcode.com/problems/longest-string-chain/discuss/458632/Simple-easy-to-follow-36-ms-solution-using-a-single-hash-map
+
 
 
 ============================================
