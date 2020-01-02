@@ -656,6 +656,7 @@ https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/
 - Don't forget to reset the child pointer to NULL, after flattening it. 
 https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/discuss/459491/0-ms-easy-to-follow-solution-in-C%2B%2B
 
+
 ================================================
      4 .  STACK
 ================================================
@@ -960,6 +961,18 @@ https://leetcode.com/problems/delete-nodes-and-return-forest/
 		node->child = NULL
 	 b) if(toDeleteSelf  AND !toDeleteChild)
 		add child to output.
+
+----------
+H. Count Tree Nodes of Complete Binary Tree (lc:222)
+-------------
+
+if(!root->left && !root->right)
+      return 0;
+if(root->left)
+    lans = 1+countNodesHelper(root->left);
+if(root->right)
+    rans = 1+countNodesHelper(root->right);
+ return lans+rans;
 		
 		
 ================================================
