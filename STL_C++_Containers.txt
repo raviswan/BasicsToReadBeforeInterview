@@ -66,7 +66,10 @@ for(auto it=range.first;it!=range.second;++it){
 	it->first;
 	it->second
 	
-=======heap=========
+
+================
+	HEAP
+================
 //max heap by default.. Heaps are stored internally as arrays. 2*i+1 and 2*i+2 to access children
 vector<int> v;
 make_heap(v.begin(),v.end()).  // make a heap
@@ -75,6 +78,26 @@ pop_heap(v.begin(),v.end()); v1.pop_back()        ///popping from a heap
 v1.front() // max of a heap
 
 make_heap(v.begin(),v.end(),greater<int>()); //min heap
+
+
+=============
+Priority Queue
+============
+// uses heap underlying. By default, max queue.
+
+priority_queue<int> pq;  // max PQ
+priority_queue<int,vector<int>,greater<int>> pq // min PQ
+
+typedef pair<int, int> pii;
+priority_queue<pii> pq ; // max PQ of pairs, ordered by first element.
+priority_queue< pii, vector<pii>, greater<pii> > pq; // min PQ of pairs ordered by first element
+
+pq.push();
+pq.pop();
+pq.top();
+pq.size();
+
+
 ===============vector==================
 vector<int> v;
 v.push_back()
