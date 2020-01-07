@@ -167,3 +167,9 @@ std::distance(v.begin(), v.end())
 - Vector of bools:
 	To keep track of true or false for unknown number of elements.
 	Bitset can only be used for fixed size known at compilation time
+	
+	
+- Converting a pair of integers into unique integer to be used in hashmap:
+
+https://stackoverflow.com/questions/919612/mapping-two-integers-to-one-in-a-unique-and-deterministic-way
+
