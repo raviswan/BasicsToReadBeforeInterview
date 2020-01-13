@@ -426,7 +426,7 @@ if(i<m-1)
 if(j<n-1)
   ans[i][j]=min(ans[i][j],1+ans[i][j+1]);
   
-  
+ https://leetcode.com/discuss/general-discussion/475924/my-experience-and-notes-for-learning-dp
   
 
 ================================================
