@@ -276,7 +276,11 @@ s: "abab" p: "ab"
 	       44400 
     - Handle carry outside the loop for both multiply and then final summation operations.
     - Use stack to store the final sum by *iterating (yes, iterating ) through hMap index and pop out the result into string.
-	
+
+9. Reorganize string (lc: 767):
+  - Use Priority Queue: Pull two elements from the queue at a time.
+  
+  
 ================================================
       BINARY SEARCH
 ================================================
