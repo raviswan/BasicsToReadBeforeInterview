@@ -29,23 +29,34 @@ dq.front() or dq.back()
 
 
 ===============String==================
-string s;
-stringstream sstrm;
-sstrm<<s;
-sstrm<<s.str();
+
+// ---- stringstream examples -----
+ostringstream oss;
+istringstream iss("example");
+iss.str("new one");
+cout<<iss.str()<<endl;
+ostringstream oss;
+oss<<25<<"ram"<<'+';
+string ex=oss.str();
+iss.str(ex);
+iss>>i>>name>>c;
 getline(sstrm,s, ',')    - will read a line from a string stream seperated by ',' and store the value one at a time in s
-						So always call it in a loop to get values repeatedly.
+					So always call it in a loop to get values repeatedly.
+getline(cin,str) -    will read everything upto and including the next EOL aand store the result (without EOL) in str.
 
 s.find("string", pos = 0) - returns pos. else check for string::npos
 s.find('c',pos = 0)
 reverse(s.begin() + 3, s.end() -4);
 sort(s.begin(), s.end());
 
+http://math.hws.edu/eck/cs225/s03/files_and_strings.html
+https://stackoverflow.com/questions/20594520/what-exactly-does-stringstream-do/20594678
+
 ============unordered_map============
 unordered_map<int,int> hMap;
 hMap[key]=value;
 hMap.count(key) // to check whether the key exists . Returns 0 if it doesnt exist.
-
+hMap.erase(key) / hMap.erase(it)
 
 
 ============unordered_set============
@@ -53,7 +64,7 @@ unordered_set<int> dict;  			//This is just hash map, except that key and value 
 unordered_set<int> dict(v.begin(),v.end()) 	//Converting vector into a hash set.
 dict.find(elem) != dict.end().    		//finding element in the set
 dict.emplace(elem) or dict.insert(elem)		//elem inserted if not present 		         
-dict.erase(elem)				//elem erased if found
+dict.erase(key) /dict.erase(it)				//elem erased if found
 
 
 
@@ -61,7 +72,7 @@ dict.erase(elem)				//elem erased if found
 unordered_multimap<string,string> hMap;
 hMap.emplace(key, value)			//No [] operator for multimap.
 hMap.erase(key)					//Will erase all the values associated with key
-auto range=matchingMap.equal_range(key);	//finding all values for a given key and browsing thru them
+auto range=matchingMap.equal_range(key);	//returns an iterator pair. For finding all values for a given key
 for(auto it=range.first;it!=range.second;++it){
 	it->first;
 	it->second
@@ -92,6 +103,13 @@ typedef pair<int, int> pii;
 priority_queue<pii> pq ; // max PQ of pairs, ordered by first element.
 priority_queue< pii, vector<pii>, greater<pii> > pq; // min PQ of pairs ordered by first element
 
+struct CustomCompre {
+   bool operator(){const pii& lhs, const pii& rhs){
+   	return lhs.first > rhs.first;
+   }
+ }
+priority_queue< pii, vector<pii>, CustomCompare > pq;
+
 pq.push();
 pq.pop();
 pq.top();
@@ -115,8 +133,13 @@ std::unique(v.begin().v.end())
 std::remove(v.begin(,v.end(),val)
 std::find(v.begin(), v.end(), val)
 std::fill(v.begin(), v.end(), val)
-std::distance(v.begin(), v.end())
+std::distance(v.begin(), v.end()) .  // calcualted number of elements between first and last. last iterator needn't be end()
 
+---Assigning vector and emptying vector
+ std::vector<int> foo (3,0);
+ std::vector<int> bar (5,0);
+  bar = foo;
+  foo = std::vector<int>();
 
 - Initializing vector:
 	vector<bool> v(count, false);
@@ -167,6 +190,10 @@ std::distance(v.begin(), v.end())
 - Vector of bools:
 	To keep track of true or false for unknown number of elements.
 	Bitset can only be used for fixed size known at compilation time
+	
+
+- Initialize a specific vector with increasing values
+	iota(v.begin(),v.end(),100); // stores values as 100,101,102 upto length of array
 	
 	
 - Converting a pair of integers into unique integer to be used in hashmap:
