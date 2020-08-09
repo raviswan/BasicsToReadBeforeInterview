@@ -66,6 +66,13 @@
 	Do this while(row<m && col >=0)
 	
 	
+- Sparse multiplication (lc: 311):
+	- You need 3 for-loops for matrix multiplication.
+     - Best explanation for sparse matrix: 
+	https://leetcode.com/problems/sparse-matrix-multiplication/discuss/419538/What-the-interviewer-is-expecting-when-this-problem-is-asked-in-an-interview...
+	
+	
+
 ========================================================================================
 Longest Substring Problems (sliding window)
 ========================================================================================
@@ -1304,6 +1311,7 @@ Output: "wertf"
 	- Now take max(parent,left,right). If parent is not max, swap parent and max element. Repeat this for new max index
 
 
+Spa
 ================================================
 					RECURSION
 ================================================
