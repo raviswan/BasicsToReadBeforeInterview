@@ -285,9 +285,14 @@ s: "abab" p: "ab"
     - Use stack to store the final sum by *iterating (yes, iterating ) through hMap index and pop out the result into string.
 
 9. Reorganize string (lc: 767):
+---------
   - Use Priority Queue: Pull two elements from the queue at a time.
   
-  
+10. Palindrome with at most 1 removal (lc:680):
+----------------
+- When you hit a character mismatch, form two substrings by omitting the unequal characters from left and right respectively. If either of them is not palindrome return false.
+
+
 ================================================
       BINARY SEARCH
 ================================================
