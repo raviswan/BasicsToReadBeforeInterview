@@ -966,7 +966,14 @@ G.  Invert Binary Tree (lc 226):
             ans.push_back(v);
         }
     }
-    
+  
+  G. Vertical Traversal(lc:314, 987):
+  ----------------
+  
+ - Think of origin as (0,0); Left child is (-1,1), its left child is (-2,-2). Right child of root is (1,1).
+ - Use hashMap <x,<y,nodeValue>> with DFS. And use custom comparator for sorting.
+ 
+ 
  ----------------
   I. Binary Tree Coloring Game (lc:1145)
   ----------------
