@@ -748,48 +748,6 @@ C. Implementing Max in Queue in 0(1) lookup
 Maintain two queues. One regular queue and another deque for storing max. Dequeueing is removing element from front of deque, enqueuing is more subtle. When the element to be added is > back of deque, keep removing all elements from back
 until you find element >= current element.
 
-================================================
-     6 .  GRAPHS
-================================================
-Time complexity: O(V+E) 
-Space Complexity: O(V)
-
-
-
-A. Word-Ladder (lc:127) (lc:126)
-------
-beginWord = "hit", endWord = "cog", wordList = ["hot","dot","dog","lot","log","cog"]
-Output: 5
-
-- Use BFS without state variable,where neighbors are  words that different from current word by 1.
-- Once all neighbors are processed for a given word, we increment the output length by 1.This requires a for-loop inside the bfs while()
-- Convert input dict to hash set because as words are popped out the queue, they are deleted from the hash set.
-- If you need to return all combinations of word ladder instead of just shorest length, then you need only two extra things: 
-	unordered_multimap<string,string> 
-	retracePath() recursive loop.
-
-
-
-B. Course Schedule aka Toploogical Sort (lc 207,lc 210)
-------
-- Toplogical sort is  DFS + 1 extra line  at the end, which is stack.push(node) . Then pop out stock to get the right order.
-- Topological sort only works when there are no cycles. Therefore it works only for directed graphs.
-- To solve Course Schedule :
-	- unordered_map<int,State>:  to store states for each node
-	- a vector of vertices - one per node. This is populated at the same time states are initialized for each node
-	- unordered_multimap<int,int>: to store neighbors
-	- VERY IMPORTANT: ensure the false is percolated all the way up for recursive DFS calls.
-
-
-C. Network Delay Time (lc: 743)
-----------
-https://leetcode.com/problems/network-delay-time/
-Key are:
-- Djikstra's shortest path algorithm (https://www.youtube.com/watch?v=pVfj6mxhdMw)
-- Use of priority queue.
-
-When you use Djikstra's algorithm, you gotta always pick the next node with least cost. To do this we need to have priority queue. Understand how priority queue is used with pairs .
-
 
 ================================================
      7. LineSweep
@@ -1269,7 +1227,22 @@ F. Longest Increasing Path in a Matrix (lc: 329)
 - We use 3 hashMaps:  1) state, 2) storing neigbors, 3) results
 - Please remember to store the result for already calculated index in hashMap.
 -Use localMax to store the max value  for each index
-- Every element has unique index in the hashMap calculated using  ( i* NUMCOLS+ j).
+- Every element has unique index in the hashMap calculated using  ( i* NUMCOLS+ j)
+
+
+G. Network Delay Time (lc: 743)
+----------
+https://leetcode.com/problems/network-delay-time/
+Key are:
+- Djikstra's shortest path algorithm (https://www.youtube.com/watch?v=pVfj6mxhdMw)
+- Use of priority queue.
+
+When you use Djikstra's algorithm, you gotta always pick the next node with least cost. To do this we need to have priority queue. Understand how priority queue is used with pairs .
+
+
+H. Accounts Merge( lc: 721):
+	- Use DFS. Remember to form the graph first using hashMaps. And use State enum.
+	- To learn union-find
 
 
 ================================================
@@ -1284,7 +1257,7 @@ A. Course Schedule aka Toploogical Sort (lc 207,lc 210)
 - To solve Course Schedule :
 	- unordered_map<int,State>:  to store states for each node
 	- a vector of vertices - one per node. This is populated at the same time states are initialized for each node
-	- Ensure the false is percolated all the way up for recursive DFS calls.
+	- IMPORTANT: Ensure the false is percolated all the way up for recursive DFS calls.
 
 
 G. Alien Dictionary (lc: 269)
