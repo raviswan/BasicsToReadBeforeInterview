@@ -710,6 +710,12 @@ B. Infix expression aka Basic Calculator (with or without paranthesis) (lc:224, 
 Refer to my leetcode solution. You call storeOperand() before virtually every character except digit
 - Refer to : https://leetcode.com/submissions/detail/229513107/
 
+C. Exclusive Time of Functions (lc: 636). - Very tricky
+-----------
+- When you encounter start,  update ans[id], do stack push and store prevTime=currTime.
+- When you encounter end,  update ans[id],. do stack pop and store prevTime=currTime+1
+- You only have to keep track of prevTime and currTime.
+
 
 ================================================
      5 .  QUEUE
@@ -1241,8 +1247,15 @@ When you use Djikstra's algorithm, you gotta always pick the next node with leas
 
 
 H. Accounts Merge( lc: 721):
+========
 	- Use DFS. Remember to form the graph first using hashMaps. And use State enum.
 	- To learn union-find
+
+G. Bipartite Graph (lc: 785)
+------
+A graph is bipartite when it has odd number of cycles. Or  in  2color scheme, the neighbor of a node is not of the same color as parent.
+- Do BFS with color vector. Use -1 for uninitialized, alternate 0 and 1. Use it as colors[neighbor] = !colors[node].
+
 
 
 ================================================
