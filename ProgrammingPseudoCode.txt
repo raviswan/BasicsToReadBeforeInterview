@@ -1345,3 +1345,24 @@ DICTIONARY ORDERING
 - pick the element from the descending order higher than a[k]. Swap it
 - Reverse the descending ordered part, i.e. after a[k]
 
+
+
+BIT MANIPULATION:
+===============
+
+- use XOR primarily. It can be used in conjunction with AND , OR and other techniques etc.
+- To get the rightmost bit set in a binary number X,  we use X & (-X)
+- Remember binary addition of A and B without + uses Full Adder implementation (https://www.electronics-tutorials.ws/combination/comb_7.html)
+	- To add A,B and CarryIn, we do the following:
+		Sum =  A xor B xor CarryIn
+		CarryOut = (A and B) OR ((A xor B)and Cin))
+- When you have negative numbers, use right shift to extract the rightmost bit.
+
+
+
+RESERVOIR SAMPLING:
+=============
+
+- Great intro to it: https://gregable.com/2007/10/reservoir-sampling.html
+	
+ 
