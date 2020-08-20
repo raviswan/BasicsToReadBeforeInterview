@@ -1094,7 +1094,12 @@ H. Convert sorted list to BST (lc: 109)
     }
 
 
-
+G. Convert Binary Search Tree to Sorted Doubly Linked List (lc: 426) - kinda tricky
+	- Routine Inorder recursive traversal with head and tail nodes as global variable. 
+	- Update head once, and update tail every time in the "visit(node)" part.
+	- Update head->left and tail->right in the main() as well at the end. 
+	
+	
 -------------------------------------------------------------
 K LARGEST ELEMENTS IN BST:
 -------------------------------------------------------------
