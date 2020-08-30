@@ -105,9 +105,17 @@ priority_queue< pii, vector<pii>, greater<pii> > pq; // min PQ of pairs ordered 
 
 struct CustomCompre {
    bool operator(){const pii& lhs, const pii& rhs){
-   	return lhs.first > rhs.first;
+   	return lhs.first > rhs.first; // for min heap ordered by first element
    }
  }
+ 
+ struct CustomCompre {
+	bool operator()(const pii& lhs, const pii& rhs) {
+	    if(lhs.first==rhs.first)
+		return lhs.second > rhs.second;  // for max heap ordered by first element, but when elements are equal, ordered by smaller of the second index.
+	    return lhs.first < rhs.first;
+	}
+}
 priority_queue< pii, vector<pii>, CustomCompare > pq;
 
 pq.push();
