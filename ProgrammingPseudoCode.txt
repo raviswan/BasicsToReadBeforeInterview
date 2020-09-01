@@ -296,6 +296,9 @@ s: "abab" p: "ab"
 ================================================
       BINARY SEARCH
 ================================================
+LC tutorial:
+https://leetcode.com/explore/learn/card/binary-search/136/template-analysis/935/
+
 1) This search is done on sorted arrays. Remember the core algo uses only 1 while loop. no recursion. When you see sorted array, it should typically be binary search.
 
 2 a. To return first element in sorted array with duplicates, the only change is to modify the target<a[mid] check as follows:
@@ -308,6 +311,7 @@ s: "abab" p: "ab"
 		
 2 b.  Find First and Last Position of Element in Sorted Array(lc: 34)
 --------
+  - Basically 3 binary searches.
   - Use binary search to locate the element the first. mark both first and last index the same.
   - use above technique for first position. For finding last position, add same logic in right side check
 
@@ -330,7 +334,7 @@ s: "abab" p: "ab"
                     end = mid -1;
             }
 	
-5) To determine , square root, run binary search with low=1 and high=x. And only one change to algo:
+5) To determine , square root, run binary search with low=2 and high=x/2. And only one change to algo:
 	- if (mid*mid < x) { low=mid+1;ans=mid; }
 
 6) To find a peak in a regular array where there can be multiple peaks but no two adjacent elements are equal:
@@ -350,6 +354,14 @@ s: "abab" p: "ab"
 	*  If it is zero, you handle is separately 
 	*  If it is non-zero,move to right of numIndex1 (& in nums2) storing prev and curr until numIndicesToAccountFor=0
 	
+8. Find K Closest Elements (lc: 658): very tricky
+	- use lower_bound
+	- and use windowing approach where left and right are k on each side and they move inward!
+	
+	
+9. Missing Element in Sorted Array (lc:1060): - very tricky
+	- See how second variant of binary search is used.
+
 
 	
 		
