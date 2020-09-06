@@ -1326,7 +1326,6 @@ Output: "wertf"
 	- Now take max(parent,left,right). If parent is not max, swap parent and max element. Repeat this for new max index
 
 
-Spa
 ================================================
 					RECURSION
 ================================================
@@ -1380,7 +1379,18 @@ BIT MANIPULATION:
 RESERVOIR SAMPLING:
 =============
 
+A.  Random Pick Index (lc:398)
+------
 - Great intro to it: https://gregable.com/2007/10/reservoir-sampling.html
  
-A.  Random Pick Index (lc:398)
-=======
+
+
+Greedy Algorithms
+========
+
+Find a celebrity (lc:277)
+---------
+- Has a nice elegant solution in O(n). My solution had worst case O(N^2)
+- Pick candidate=0. There are two for loops
+- In first loop, you filter down to one candidate as possible celebrity
+- In second loop, you ensure whether that candidate is celebrity or not. 
