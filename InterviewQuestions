@@ -8,3 +8,18 @@ Uber Phone Screen by recruiter:
 4) You have a super large file that will take weeks to process on a single machine. How would you speed up the process?
 5)Difference between queue and a stack?
 6) Difference between list and a set?
+
+
+
+FB Phone screen (2020):
+
+Given an array of cities with population , return a city randomly weighted by its population
+E.g.
+cities={"SF":6M, "LA":10M,"BOS":20M}, you should return a random index weighted by total population:
+i.e. SF should have a probability of 6/36, LA: 10/36, BOS:20/36
+
+
+WayMo Phone screen(2020):
+
+
+
