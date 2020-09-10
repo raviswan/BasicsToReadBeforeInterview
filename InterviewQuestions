@@ -12,14 +12,37 @@ Uber Phone Screen by recruiter:
 
 
 FB Phone screen (2020):
+============
 
 Given an array of cities with population , return a city randomly weighted by its population
 E.g.
 cities={"SF":6M, "LA":10M,"BOS":20M}, you should return a random index weighted by total population:
 i.e. SF should have a probability of 6/36, LA: 10/36, BOS:20/36
 
+I used Run Length Encoding to grab the answer!
+
 
 WayMo Phone screen(2020):
+================
 
+Design a snake game. Where the fruits is what snake consumes to grow. Every time it consumes a fruit, it grows in size by one pixel. Once it reaches the
+edges of the 200x200 torus grid, where it wraps around (ie. if snakes goes up beyond zeroth row, it appears from the bottom most row)
+It can move only in 4 directions, UP, DOWN, LEFT and RIGHT. What's given is a vector of fruit co-ordinates(vector<vector<int>>), 
+and a vector of operations (vector<char>)
+
+When snake crosses its body,you return 0; otherwise return 1.
+
+Snake is known to cross its body when the head position becomes part of its body position.
+
+So, you are given head_positiom: (x0,y0):
+operations: {'u','u','d','r','l','d'}.    - there are 'm' fruits with m~10
+fruit_location: {{1,3},{4,99},{33,111}}.  - there are 'k' operations with k~100
+
+return 1 if the snake head never crosses its body
+return 0 if the snake head never crosses its body at the end of the operations
+
+
+The key is to determine what data structure to use for the body because the body is gonna 
+follow the head and can hit the boundaies and be in two different directions. I took up vector<vector<int>> but that's not the correct solution.
 
 
