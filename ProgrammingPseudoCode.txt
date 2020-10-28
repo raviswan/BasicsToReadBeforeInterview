@@ -585,6 +585,34 @@ while(fast!=null){
 return false;
 
 
+Better Approach:
+=====
+take 1 thru 6 nodes and make 6th node point to 3 node
+ListNode *detectCycle(ListNode *head) {
+        if(!head)
+            return NULL;
+        ListNode* slow=head;
+        ListNode* fast=head;
+        while(fast && fast->next){
+            fast=fast->next->next;
+            slow=slow->next;
+            if(fast==slow){
+                break;
+            }
+        }
+        if(!fast || !fast->next)
+            return NULL;
+        fast=head;
+        while(fast!=slow){
+            slow=slow->next;
+            fast=fast->next;
+        }
+        return slow;
+        
+    }
+    
+    
+
 C. Length of Cycle in List:
 ------------------------------------------------
 Once you determine fast meets slow, exit the loop, move fast 1 node at a time until it meets slow again. Compute the length
