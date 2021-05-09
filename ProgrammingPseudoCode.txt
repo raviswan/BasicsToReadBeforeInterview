@@ -1422,3 +1422,8 @@ Find a celebrity (lc:277)
 - Pick candidate=0. There are two for loops
 - In first loop, you filter down to one candidate as possible celebrity
 - In second loop, you ensure whether that candidate is celebrity or not. 
+
+
+665. Non-decreasing Array
+
+https://leetcode.com/problems/non-decreasing-array/
