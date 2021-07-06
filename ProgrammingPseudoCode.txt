@@ -1413,7 +1413,77 @@ A.  Random Pick Index (lc:398)
  
 
 
-Greedy Algorithms
+UNION_FIND 
+=======
+
+https://www.cs.princeton.edu/~rs/AlgsDS07/01UnionFind.pdf
+
+Find: See if two elements are in same set, check if there's a path between two network nodes, check if nodes are connected etc.
+Union: Merge two elements to form one set: Add  a connection between grid points etc.
+
+The idea here is that there's an "id" array that stores who the parent of the current node is. That parent is modified with every pass through the nodes N.
+As you find the parents, it results in a tree that grows in depth. To optimize for it, we use "weighted-union", where tree with lowest depth is added to tree with greater depth. And then we do "path compression", where we set parent of a given node to its grand-parent.
+
+Here's how it works:
+
+For N nodes:
+vector<int> id(n,0); //parent vector
+vector<int> sz(n,1); // size vector
+
+Initialization
+------
+for (int i=0;i<n;++i){
+    id[i]=i;
+    sz[i]=1;
+}
+
+Find
+----
+  int root(int i){
+ 	while (i!=id[i])
+	   i=id[i];
+	return i;
+  }
+  // another variant for path compression (make every examined node in the path point to its grandparent)
+  int root(int i){
+ 	while (i!=id[i]) {
+	   id[i]=id[id[i]];
+	   i=id[i];
+	}
+	return i;
+  }
+  
+  
+  bool find(int p, int q){
+  	return root(p) == root(q);
+  }
+  
+ Weighted Union with Path Compression 
+ ----
+ bool union(int p, int q){
+ 	int i=root(p);
+ 	int j=root(q);
+ 	if(sz[i]<sz[j]){
+ 		id[i]=j;
+		sz[j] += sz[i];
+ 	} else {
+  		id[j]=i;
+		sz[i] += sz[j];
+	}
+}
+
+Big O complexity: M union-find operation on a set of N objects: (M+N)log N
+
+
+
+Minimum Spanning Tree (MST) using Kruskal's algorithm 
+=================
+
+A spaning tree means all vertices need to be connected. The spanning tree with lowest sum of edges is a MST
+The idea is that for an undirected graph with V vertices and E edges, there exists MST
+Union-Find is used here
+
+GREEDY ALGORITHMS
 ========
 
 Find a celebrity (lc:277)
