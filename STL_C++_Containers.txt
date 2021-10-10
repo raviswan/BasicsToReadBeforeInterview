@@ -222,3 +222,32 @@ std::distance(v.begin(), v.end()) .  // calcualted number of elements between fi
 
 https://stackoverflow.com/questions/919612/mapping-two-integers-to-one-in-a-unique-and-deterministic-way
 
+
+
+GRAPH/N-ARIES TREE
+===================
+Are nodes identified using index from 0 to N?
+    YES => the node index (vertex) will match the vector index
+          	vector<vector<int> > > graph;
+                   OR
+		vector<vector<pair<int, int> > > graph; //edges have weight
+    NO => you have to create dedicated classes
+		class Edge;
+		class Vertex
+		{
+		 int id;
+		 vector<Edge*> ptr_edges;
+		}
+		class Edge
+		{
+		 Vertex *from;
+		 Vertex *to;
+		 int cost;
+		}
+		class Graph
+		{
+ 			vector<Vertex> vertices;
+		}
+		
+		
+		
