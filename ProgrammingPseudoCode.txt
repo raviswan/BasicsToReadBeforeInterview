@@ -1497,3 +1497,16 @@ Find a celebrity (lc:277)
 665. Non-decreasing Array
 
 https://leetcode.com/problems/non-decreasing-array/
+
+
+
+OVERLAPPING INTERVALS ALGORITHM
+==============================
+
+Interval A = [leftA, rightA]
+Interval B = [leftB, rightB]
+Overlapping region:  [max(leftA, leftB) , min(rightA, rightB)]                 
+which means if(max(leftA, leftB) < min(rightA, rightB)), there is an overlap.
+
+Problem 836: https://leetcode.com/problems/rectangle-overlap/discuss/185809/Template%3A-Interval-Overlapping
+Problem 986: https://leetcode.com/problems/interval-list-intersections/
