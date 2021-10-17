@@ -1510,3 +1510,10 @@ which means if(max(leftA, leftB) < min(rightA, rightB)), there is an overlap.
 
 Problem 836: https://leetcode.com/problems/rectangle-overlap/discuss/185809/Template%3A-Interval-Overlapping
 Problem 986: https://leetcode.com/problems/interval-list-intersections/
+
+
+TIC-TAC-TOE
+====
+Problem 348,  Problem 1275
+- Use hashMaps for each player's row and columns, and counter  for diag and reverseDiag
+	https://leetcode.com/problems/design-tic-tac-toe/discuss/1526502/Short-and-simple-easy-to-follow-20-ms-solution-using-hashMaps
