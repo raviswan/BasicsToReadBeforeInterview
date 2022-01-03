@@ -1406,6 +1406,7 @@ BIT MANIPULATION:
 
 RESERVOIR SAMPLING:
 =============
+https://gregable.com/2007/10/reservoir-sampling.html
 Reservoir sampling is a family of randomized algorithms for choosing a simple random sample, without replacement, of k items from a population of unknown size n in a single pass over the items.The size of the population n is not known to the algorithm and is typically too large for all n items to fit into main memory
 Core algorithm:
 "The algorithm works by maintaining a reservoir of size k, which initially contains the first k items of the input. It then iterates over the remaining items until the input is exhausted. Using one-based array indexing, let i>k be the index of the item currently under consideration. The algorithm then generates a random number j between (and including) 1 and i. If j is at most k, then the item is selected and replaces whichever item currently occupies the j-th position in the reservoir. Otherwise, the item is discarded. In effect, for all i, the ith element of the input is chosen to be included in the reservoir with probability k/i. Similarly, at each iteration the jth element of the reservoir array is chosen to be replaced with probability  1/k * k/i = 1/i. It can be shown that when the algorithm has finished executing, each item in the input population has equal probability (k/n) of being chosen for the reservoir:  k/i * (1-1/(i+1)) * (1-1/(i+2)) * (1-1/(i+3)) ...* (1-1/n)=k/n"
