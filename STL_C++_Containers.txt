@@ -221,6 +221,12 @@ std::distance(v.begin(), v.end()) .  // calcualted number of elements between fi
 - Initialize a specific vector with increasing values
 	iota(v.begin(),v.end(),100); // stores values as 100,101,102 upto length of array
 	
+- Finding next highest val in a sorted vector
+	upper_bound(vec.begin(),vec.end(),val) - vec.begin() // returns the index where next highest value after val is found
+	
+- Finding lower or equal value in a sorted vector
+	lower_bound(vec.begin(),vec.end(),val)-vec.begin() // could return index of the first value==val in vector or a value lower than val.
+	
 	
 - Converting a pair of integers into unique integer to be used in hashmap:
 
