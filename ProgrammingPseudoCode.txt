@@ -1410,6 +1410,9 @@ RESERVOIR SAMPLING:
 A.  Random Pick Index (lc:398)
 ------
 - Great intro to it: https://gregable.com/2007/10/reservoir-sampling.html
+
+B. Random Pick with Weight (lc: 528)  : Based on prefix sum and binary search
+
  
 
 
