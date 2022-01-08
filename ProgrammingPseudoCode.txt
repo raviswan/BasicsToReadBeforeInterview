@@ -362,7 +362,8 @@ https://leetcode.com/explore/learn/card/binary-search/136/template-analysis/935/
 9. Missing Element in Sorted Array (lc:1060): - very tricky
 	- See how second variant of binary search is used.
 
-
+10. Cutting Ribbons (lc 1891):
+	- You should know how to use the binary search. It's not always operating binary search on input vector. In this case, binary search is done  on the possible values of answer,whose range is between 1 and (sum of input vector)/k. There's also trick to save the last working value.
 	
 		
 ================================================
