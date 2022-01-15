@@ -1302,7 +1302,9 @@ G. Bipartite Graph (lc: 785)
 A graph is bipartite when it has odd number of cycles. Or  in  2color scheme, the neighbor of a node is not of the same color as parent.
 - Do BFS with color vector. Use -1 for uninitialized, alternate 0 and 1. Use it as colors[neighbor] = !colors[node].
 
-
+K. 827. Making A Large Island (lc: 827) :
+====
+Interesting twist to DFS, where you mark each connected component with unique label.
 
 ================================================
 	TOPOLOGICAL SORT
