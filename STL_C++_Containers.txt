@@ -187,6 +187,11 @@ std::distance(v.begin(), v.end()) .  // calcualted number of elements between fi
 	}
 	sort(pointsA.begin(),pointsA.end(),sortElementsByValue);
 	
+	auto lamba = [&](char& a, char& b){
+		return a < b;
+	}
+	sort(vec.begin(),vec.end(),lambda);
+	
 	
 - Erasing dupilicates and sorting a vector
 	Method1: unique() call moves all duplicates to the end of the sorted vector.And then erase it
