@@ -1,5 +1,18 @@
-C++ STL CONTAINERS
+PROGRAMMING SHORTCUTS
+====
+Traversing 4 directions of a matrix: 
+       int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+      for (auto& dir : dirs) {
+            int nextRow = row + dir[0];
+            int nextCol = col + dir[1];
+            if (nextRow >= 0 && nextCol >= 0 && nextRow < rows && nextCol < cols) {
+	    
 
+E.g. of above usage: https://leetcode.com/problems/making-a-large-island/solution/
+
+
+C++ STL CONTAINERS
+===========
 
 https://github.com/gibsjose/cpp-cheat-sheet/blob/master/Data%20Structures%20and%20Algorithms.md
 
