@@ -60,4 +60,46 @@
       }
             
       
-    
+  5. BFS
+  ==========
+  - Needs a queue with starting position. 
+  - Outer while loop to process q until queue is empty
+  - Inner for loop to process current queue size.
+  
+   int dir[8][2] = {{1,0},{-1,0},{0,-1},{0,1},{1,1},{1,-1},{-1,-1},{-1,1}};
+   int steps=0;
+   while(!q.empty()){
+            ++steps;
+            for(int k=q.size();k>0;k--){
+                row = q.front().first;
+                col = q.front().second;
+                q.pop();
+                for(auto& d: dir){
+                    i = row + d[0];
+                    j = col + d[1];
+                    if(i>=0 && j>=0 && i<n && j < n && !grid[i][j]){
+                        q.push({i,j});
+                        grid[i][j]=1;
+                    }
+                }
+            }
+        }
+
+
+6. A* algorithm - Not a must to know but if interested. 
+========
+It's based on heuristic at every step of the path.
+https://leetcode.com/problems/shortest-path-in-binary-matrix/solution/
+
+
+PITFALLS of in-place algorithm:
+
+================
+However, like all in-place algorithms, overwriting the input can cause problems. Here are a couple of possible scenarios you need to consider.
+
+1) That the algorithm is running in a * multithreaded* environment, and it does not have exclusive access to the grid. 
+Other threads might need to read the grid too, and might not expect it to be modified.
+
+2) That there is only a single thread or the algorithm has exclusive access to the grid while running, 
+but the grid might need to be reused later or by another thread once the lock has been released.
+
