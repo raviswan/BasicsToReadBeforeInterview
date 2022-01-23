@@ -180,7 +180,13 @@ To determine max sum in array with  +ve & -ve, you have to determine local max a
 			another while loop for eliminating duplicates of nums[i]
 		   }
 		 
- 	
+ 6. Maximum Points You Can Obtain from Cards (lc:1423)
+ ---------------
+		1)Store all the sums for first K elements , from 0 elements all the way upto K elements.
+		2) Likewise, store all the sums of last K elements, with last index conaining 0 elements and 1st index containg sum of last K elements.
+		3) Now loop through both vecotrs , sum up corresponding indices, get max out of it.
+		
+
 	
 ================================================
     STRINGS
@@ -859,10 +865,10 @@ A.  Implement InOrder, Pre & Post-order traversal iteratively (lc:145)
 		    
 B. Height Of Tree(i.e. Max Depth of Tree) (lc: 104): 
 ------
-	if(!root) return 0;
+	if(!root) return 0;                //Remember you could have base condition as returning -1 too!
 	int leftHeight=maxDepth(node->left);
         int rightHeight=maxDepth(node->right);
-	return 1+max(leftHeight, rightHeight);
+	return 1+max(leftHeight, rightHeight); 
 	
 	
 C. Check Balanced Tree (lc: 110):
@@ -1014,8 +1020,29 @@ if(root->left)
 if(root->right)
     rans = 1+countNodesHelper(root->right);
  return lans+rans;
-		
-		
+
+
+----------
+J. Collect Leaves of Binary tree (lc:366)
+-------------
+Very smart solution where you calculate height of a tree using 1 + max(leftH,rightH) as usual
+and immediately after, check to see if size of output vector is equal to currentHeight. If so, add an empty entry and  populate it immediately.
+
+  int treeHeight(TreeNode* root, vector<vector<int>>& ans) {
+        if(!root)
+            return -1;
+        int leftHeight = treeHeight(root->left,ans);
+        int rightHeight = treeHeight(root->right,ans);
+        int currentHeight = 1 + max(leftHeight,rightHeight);
+        if(ans.size() == currentHeight) {
+            ans.push_back({});
+        }
+        ans[currentHeight].push_back(root->val);
+        return currentHeight;
+    }
+    
+    
+
 ================================================
       9.  BST
 ================================================
