@@ -103,3 +103,115 @@ Other threads might need to read the grid too, and might not expect it to be mod
 2) That there is only a single thread or the algorithm has exclusive access to the grid while running, 
 but the grid might need to be reused later or by another thread once the lock has been released.
 
+
+7. Shuffling a Deck - Fisher Yates Algoirthm
+=========================
+
+Best resource - https://bost.ocks.org/mike/shuffle/
+
+    // Start from the last element and swap
+    // one by one. We don't need to run for
+    // the first element that's why i > 0
+    for (int i = n - 1; i > 0; i--)
+    {
+        // Pick a random index from 0 to i
+        int j = rand() % (i + 1);
+ 
+        // Swap arr[i] with the element
+        // at random index
+        swap(vec[i], vec[j]);
+    }
+
+
+
+8. RESERVOIR SAMPLING:
+=============
+
+https://gregable.com/2007/10/reservoir-sampling.html
+Reservoir sampling is a family of randomized algorithms for choosing a simple random sample, without replacement, of k items from a population of unknown size n in a single pass over the items.The size of the population n is not known to the algorithm and is typically too large for all n items to fit into main memory
+Core algorithm:
+"The algorithm works by maintaining a reservoir of size k, which initially contains the first k items of the input. It then iterates over the remaining items until the input is exhausted. Using one-based array indexing, let i>k be the index of the item currently under consideration. The algorithm then generates a random number j between (and including) 1 and i. If j is at most k, then the item is selected and replaces whichever item currently occupies the j-th position in the reservoir. Otherwise, the item is discarded. In effect, for all i, the ith element of the input is chosen to be included in the reservoir with probability k/i. Similarly, at each iteration the jth element of the reservoir array is chosen to be replaced with probability  1/k * k/i = 1/i. It can be shown that when the algorithm has finished executing, each item in the input population has equal probability (k/n) of being chosen for the reservoir:  k/i * (1-1/(i+1)) * (1-1/(i+2)) * (1-1/(i+3)) ...* (1-1/n)=k/n"
+
+A.  Random Pick Index (lc:398)
+-----------------
+In this case,  Reservoir sampling allows us to choose any number uniformly at random from the list of n numbers.
+
+
+Look at the  LC solution to follow how it is implemented. Basically, you loop through the input array and at every iteration, you check to see if target is found. If it is , you then you do a ( rand()% num of occurrences of target so far ==0) to return the index.
+
+More Explanation:
+Each loop you are incrementing the count of possible indices. So if the array was (1, 1, 1) and the target was 1 then
+Loop 1: Rand could return 0 (100%)
+Loop 2: Rand could return 0 or 1 (50%)
+Loop 3: Rand could return 0 or 1 or 2 (33.33.. %)
+
+
+
+9. UNION_FIND 
+=======
+
+https://www.cs.princeton.edu/~rs/AlgsDS07/01UnionFind.pdf
+
+Find: See if two elements are in same set, check if there's a path between two network nodes, check if nodes are connected etc.
+Union: Merge two elements to form one set: Add  a connection between grid points etc.
+
+The idea here is that there's an "id" array that stores who the parent of the current node is. That parent is modified with every pass through the nodes N.
+As you find the parents, it results in a tree that grows in depth. To optimize for it, we use "weighted-union", where tree with lowest depth is added to tree with greater depth. And then we do "path compression", where we set parent of a given node to its grand-parent.
+
+Here's how it works:
+
+For N nodes:
+vector<int> id(n,0); //parent vector
+vector<int> sz(n,1); // size vector
+
+Initialization
+------
+for (int i=0;i<n;++i){
+    id[i]=i;
+    sz[i]=1;
+}
+
+Find
+----
+  int root(int i){
+ 	while (i!=id[i])
+	   i=id[i];
+	return i;
+  }
+  // another variant for path compression (make every examined node in the path point to its grandparent)
+  int root(int i){
+ 	while (i!=id[i]) {
+	   id[i]=id[id[i]];
+	   i=id[i];
+	}
+	return i;
+  }
+  
+  
+  bool find(int p, int q){
+  	return root(p) == root(q);
+  }
+  
+ Weighted Union with Path Compression 
+ ----
+ bool union(int p, int q){
+ 	int i=root(p);
+ 	int j=root(q);
+ 	if(sz[i]<sz[j]){
+ 		id[i]=j;
+		sz[j] += sz[i];
+ 	} else {
+  		id[j]=i;
+		sz[i] += sz[j];
+	}
+}
+
+Big O complexity: M union-find operation on a set of N objects: (M+N)log N
+
+
+10. Minimum Spanning Tree (MST) using Kruskal's algorithm 
+=================
+
+A spaning tree means all vertices need to be connected. The spanning tree with lowest sum of edges is a MST
+The idea is that for an undirected graph with V vertices and E edges, there exists MST
+Union-Find is used here
