@@ -1185,29 +1185,54 @@ Remember to check the size of vector before making a call to right, and left
 -  Used for auto-complete, and string storage for games like boggle where you choose a valid path based on trie traversal.
 - Think of storing words starting with same letter such as dog,dig,dot,dote,deck. You store d at first level; e,i,o at 2nd level etc.
 - For implementation, think of tree implementation where each child node is a Tree. Likewise, each node at a given level is Trie accessed using hashmap[char] stored at its parent level. 
-- Remember to start with Trie* node = this, and keep re-assigning values to node
+- Remember to start with null HashMap initialization in ctor and in other methods, to use Trie* node = this, and keep re-assigning values to node
 
-class Trie{
-	Trie(){
-        	neighbors={};isWord=false;
-    	}
-	
-	void insert(string word) {
-        	Trie* node = this;
-        	for(auto& c: word){
-            		if(!node->neighbors.count(c))
-                		node->neighbors[c]=new Trie();
-            		node = node->neighbors[c];
-        	}
-        	node->isWord = true;
-   	 }
-	 
-	bool search(string word) {}
-	bool startsWith(string prefix) {}
- private:
+class Trie {
+public:
+    /** Initialize your data structure here. */
+    Trie() {
+        neighbors={};
+        isWord=false;
+    }
+    
+    /** Inserts a word into the trie. */
+    void insert(string word) {
+        Trie* node = this;
+        for(auto& c: word){
+            if(!node->neighbors.count(c))
+                node->neighbors[c]=new Trie();
+            node = node->neighbors[c];
+        }
+        node->isWord = true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    bool search(string word) {
+        Trie* node = this;
+        for(auto& c: word){
+            if(!node->neighbors.count(c))
+                return false;
+            node=node->neighbors[c];
+        }
+        return node->isWord;
+        
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    bool startsWith(string prefix) {
+        Trie* node = this;
+        for(auto& c: prefix){
+            if(!node->neighbors.count(c))
+                return false;
+            node=node->neighbors[c];
+        }
+        return true;
+    }
+    private:
         unordered_map<char,Trie*> neighbors;
         bool isWord;
-}
+};
+
 
 ================================================
 	11. GRAPHS
