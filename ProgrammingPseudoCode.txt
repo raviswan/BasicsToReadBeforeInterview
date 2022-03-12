@@ -19,6 +19,9 @@
 - Rotaing an array k times (LC:189): 
 	Use three reverse calls just as in sentence reversal. use k=k%sz for k> sz 
 
+- 3sum smaller (lc: 259):  Use two pointers for j and k converging towards middle with outer loop running length of input
+
+
  2-D Array
 ------------------------
 
